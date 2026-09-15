@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <link rel="icon" type="image/svg+xml" href="assets/images/bee.svg" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Le confessional de la ruche | Flopy19</title>
+    <meta
+      name="description"
+      content="Les réponses de Flopy19 et son classement de confiance, épisode après épisode sur SurvIsland."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="episodes.css" />
+    <link rel="stylesheet" href="bee-theme.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="bee-ambient" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <nav class="site-nav container" aria-label="Navigation principale">
+      <a class="brand" href="index.html"
+        ><img
+          src="assets/images/bee.svg"
+          width="42"
+          height="36"
+          alt=""
+        />SurvIsland<span>.</span></a
+      ><a href="index.html#dossier">La candidature</a
+      ><a class="season-tag" href="admin.html">Espace Flopy19</a>
+    </nav>
+    <main class="container journal">
+      <header class="journal-heading">
+        <h1>Le confessional <span>de Flopy19.</span></h1>
+        <div class="hive-ornament" aria-hidden="true">
+          <span class="hive-cell"></span><span class="hive-cell"></span
+          ><span class="hive-cell"></span><span class="hive-cell"></span
+          ><span class="hive-cell"></span><span class="hive-cell"></span
+          ><span class="hive-cell"></span><span class="hive-trail"></span
+          ><span class="hive-bee"></span
+          ><span class="hive-bee hive-bee--small"></span
+          ><span class="hive-bee hive-bee--tiny"></span>
+        </div>
+      </header>
+      <p id="viewer-status" role="status">Chargement des épisodes…</p>
+      <div class="journal-layout" id="journal-layout" hidden>
+        <aside>
+          <nav aria-label="Choisir un épisode">
+            <p class="episode-list-heading">Choisir un épisode</p>
+            <ul id="episode-list" class="episode-list"></ul>
+          </nav>
+        </aside>
+        <div id="episode-view"></div>
+      </div>
+      <details class="season-roster" open>
+        <summary>Les 20 joueurs · Les équipes de départ</summary>
+        <div id="season-roster"></div>
+      </details>
+      <noscript><p>Active JavaScript pour consulter les épisodes.</p></noscript>
+    </main>
+    <footer class="site-footer container">
+      <p>Flopy19 · Saison 32</p>
+      <a href="index.html">Retour à l’accueil</a>
+    </footer>
+    <script type="module" src="episodes.js"></script>
+  </body>
+</html>

@@ -14,9 +14,11 @@ const quotes = [
 const quoteText = document.getElementById("quoteText");
 const newQuoteButton = document.getElementById("newQuoteButton");
 const hero = document.querySelector(".hero");
-const tiltTargets = document.querySelectorAll(".plan-card, .quote-box, .media-placeholder:not(.hero__media)");
+const tiltTargets = document.querySelectorAll(
+  ".plan-card, .quote-box, .media-placeholder:not(.hero__media)",
+);
 const revealTargets = document.querySelectorAll(
-  ".section-heading, .panel, .identity-card, .plan-card, .media-placeholder, .media-caption, .quote-box"
+  ".section-heading, .panel, .identity-card, .plan-card, .media-placeholder, .media-caption, .quote-box",
 );
 
 function getRandomQuote() {
@@ -48,7 +50,11 @@ function setupQuoteButton() {
 }
 
 function setupReveal() {
-  if (!revealTargets.length) {
+  if (
+    !revealTargets.length ||
+    !("IntersectionObserver" in window) ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
     return;
   }
 
@@ -66,9 +72,9 @@ function setupReveal() {
       });
     },
     {
-      threshold: 0.16,
-      rootMargin: "0px 0px -8% 0px"
-    }
+      threshold: 0,
+      rootMargin: "0px 0px -32px 0px",
+    },
   );
 
   revealTargets.forEach((element) => {
@@ -77,7 +83,11 @@ function setupReveal() {
 }
 
 function setupHeroParallax() {
-  if (!hero || !window.matchMedia("(pointer: fine)").matches) {
+  if (
+    !hero ||
+    !window.matchMedia("(pointer: fine)").matches ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
     return;
   }
 
@@ -97,7 +107,11 @@ function setupHeroParallax() {
 }
 
 function setupTilt() {
-  if (!tiltTargets.length || !window.matchMedia("(pointer: fine)").matches) {
+  if (
+    !tiltTargets.length ||
+    !window.matchMedia("(pointer: fine)").matches ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
     return;
   }
 

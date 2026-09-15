@@ -1,0 +1,320 @@
+/* Seasonal decoration shared by the home page and the confessional. */
+body {
+  background:
+    radial-gradient(ellipse at 88% 0, #9c671c24, transparent 36rem),
+    radial-gradient(ellipse at 2% 65%, #bc86200d, transparent 35rem), var(--bg);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: url("assets/images/honeycomb.svg") center / 104px 180px;
+  opacity: 0.24;
+  mask-image: linear-gradient(
+    90deg,
+    #000,
+    transparent 24%,
+    transparent 76%,
+    #000
+  );
+}
+.bee-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bee-ambient span {
+  position: absolute;
+  width: 48px;
+  height: 40px;
+  background: url("assets/images/bee.svg") center / contain no-repeat;
+  image-rendering: pixelated;
+  animation: hive-drift 9s ease-in-out infinite;
+}
+.bee-ambient span:nth-child(1) {
+  left: 3%;
+  top: 20%;
+  rotate: -16deg;
+}
+.bee-ambient span:nth-child(2) {
+  right: 3%;
+  top: 39%;
+  width: 38px;
+  rotate: 18deg;
+  animation-delay: -3s;
+}
+.bee-ambient span:nth-child(3) {
+  left: 4%;
+  top: 69%;
+  width: 34px;
+  rotate: 12deg;
+  animation-delay: -6s;
+}
+.bee-ambient span:nth-child(4) {
+  right: 4%;
+  top: 84%;
+  rotate: -20deg;
+  animation-delay: -1s;
+}
+.bee-ambient span::after {
+  content: "";
+  position: absolute;
+  width: 42px;
+  height: 28px;
+  right: 90%;
+  top: 50%;
+  border-bottom: 1px dashed #e4b64b60;
+  border-radius: 50%;
+  rotate: 20deg;
+}
+.journal-heading {
+  position: relative;
+  max-width: none;
+  padding: 36px 300px 36px 0;
+  min-height: 260px;
+}
+.journal-heading h1 {
+  position: relative;
+  z-index: 1;
+}
+.hive-ornament {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  width: 260px;
+  height: 230px;
+  pointer-events: none;
+}
+.hive-cell {
+  position: absolute;
+  width: 76px;
+  height: 86px;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  background: linear-gradient(150deg, #f5bd41bb, #9d62152b);
+}
+.hive-cell::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: #211b10;
+  clip-path: inherit;
+}
+.hive-cell:nth-child(1) {
+  left: 48px;
+  top: 3px;
+}
+.hive-cell:nth-child(2) {
+  left: 128px;
+  top: 3px;
+}
+.hive-cell:nth-child(3) {
+  left: 8px;
+  top: 71px;
+}
+.hive-cell:nth-child(4) {
+  left: 88px;
+  top: 71px;
+  background: linear-gradient(140deg, #ffe28d, #d38b1a);
+}
+.hive-cell:nth-child(4)::after {
+  background: linear-gradient(145deg, #bb781629, #f5bd4160);
+}
+.hive-cell:nth-child(5) {
+  left: 168px;
+  top: 71px;
+}
+.hive-cell:nth-child(6) {
+  left: 48px;
+  top: 139px;
+  opacity: 0.6;
+}
+.hive-cell:nth-child(7) {
+  left: 128px;
+  top: 139px;
+  opacity: 0.5;
+}
+.hive-bee {
+  position: absolute;
+  width: 106px;
+  height: 80px;
+  top: 67px;
+  left: 72px;
+  background: url("assets/images/bee.svg") center / contain no-repeat;
+  filter: drop-shadow(0 9px 9px #0008);
+  image-rendering: pixelated;
+  animation: hive-drift 6s ease-in-out infinite;
+}
+.hive-bee--small {
+  width: 48px;
+  height: 40px;
+  left: 208px;
+  top: 10px;
+  rotate: -20deg;
+  animation-delay: -2s;
+}
+.hive-bee--tiny {
+  width: 37px;
+  height: 32px;
+  left: -8px;
+  top: 175px;
+  rotate: 20deg;
+  animation-delay: -4s;
+}
+.hive-trail {
+  position: absolute;
+  width: 200px;
+  height: 115px;
+  left: 5px;
+  top: 40px;
+  border: 1px dashed #f5bd4145;
+  border-top-color: transparent;
+  border-radius: 50%;
+  rotate: -24deg;
+}
+.episode-heading {
+  position: relative;
+  padding: 24px 72px 24px 24px;
+  border: 1px solid #6f522d;
+  border-radius: 16px;
+  background: linear-gradient(110deg, #3b2d17, #211e16 70%);
+}
+.episode-heading::after {
+  content: "";
+  position: absolute;
+  right: 20px;
+  top: 24px;
+  width: 42px;
+  height: 36px;
+  background: url("assets/images/bee.svg") center / contain no-repeat;
+  rotate: 12deg;
+  pointer-events: none;
+}
+.episode-heading .eyebrow {
+  color: #ffcf65;
+}
+.episode-link {
+  position: relative;
+  padding-right: 46px;
+  background: linear-gradient(120deg, #292215, var(--panel));
+}
+.episode-link[aria-current="true"]::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 16px;
+  width: 28px;
+  height: 25px;
+  background: url("assets/images/bee.svg") center / contain no-repeat;
+  pointer-events: none;
+}
+.answer-card {
+  border-top: 2px solid #b58635;
+  background: linear-gradient(140deg, #32281780, transparent 42%), var(--panel);
+}
+.answer-card .eyebrow::before {
+  content: "";
+  display: inline-block;
+  vertical-align: -2px;
+  width: 12px;
+  height: 14px;
+  margin-right: 9px;
+  background: var(--honey);
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+.trust-board > .subheading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.trust-board > .subheading::before {
+  content: "";
+  flex: 0 0 34px;
+  height: 30px;
+  background: url("assets/images/bee.svg") center / contain no-repeat;
+}
+.tier-label {
+  background-image: url("assets/images/honeycomb.svg");
+  background-size: 52px 90px;
+}
+.tier-row {
+  box-shadow: 0 5px 20px #08060224;
+}
+.rank-number {
+  display: grid;
+  place-items: center;
+  min-height: 30px;
+  background: #f5bd4112;
+  border-radius: 6px;
+}
+.roster-team {
+  background: linear-gradient(100deg, var(--panel) 65%, #2b2415);
+}
+.gallery-photo {
+  border-color: #906a2c;
+  box-shadow: 0 0 0 4px #f5bd4108;
+}
+.gallery-thumbnail[aria-current="true"] {
+  box-shadow: 0 0 14px #f5bd4120;
+}
+.site-footer {
+  border-top: 1px solid #75552b;
+}
+.site-footer::after {
+  content: "";
+  display: block;
+  width: 46px;
+  height: 38px;
+  background: url("assets/images/bee.svg") center / contain no-repeat;
+  pointer-events: none;
+  rotate: -10deg;
+}
+@keyframes hive-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-4deg);
+  }
+  50% {
+    transform: translate(7px, -10px) rotate(5deg);
+  }
+}
+@media (max-width: 1280px) {
+  .bee-ambient {
+    display: none;
+  }
+}
+@media (max-width: 720px) {
+  .journal-heading {
+    padding: 12px 0 0;
+    min-height: 0;
+    margin-bottom: 28px;
+  }
+  .hive-ornament {
+    position: relative;
+    right: auto;
+    top: auto;
+    margin: 8px auto 0;
+    height: 205px;
+    transform: scale(0.85);
+    transform-origin: center;
+  }
+  .episode-heading {
+    padding: 20px 58px 20px 20px;
+  }
+  .episode-heading::after {
+    width: 32px;
+    right: 12px;
+    top: 20px;
+  }
+  body::before {
+    opacity: 0.14;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bee-ambient span,
+  .hive-bee {
+    animation: none;
+  }
+}

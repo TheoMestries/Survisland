@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <link rel="icon" type="image/svg+xml" href="assets/images/bee.svg" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Espace Flopy19 | Le confessional de la ruche</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="episodes.css" />
+    <link rel="stylesheet" href="bee-theme.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="bee-ambient" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <nav class="site-nav container" aria-label="Navigation principale">
+      <a class="brand" href="index.html"
+        ><img
+          src="assets/images/bee.svg"
+          width="42"
+          height="36"
+          alt=""
+        />Flopy19<span>.</span></a
+      ><a href="episodes.html">Vue spectateur ↗</a>
+    </nav>
+    <main class="container journal">
+      <header class="journal-heading">
+        <p class="eyebrow">Espace privé</p>
+        <h1>Ton carnet <span>de saison.</span></h1>
+        <div class="hive-ornament" aria-hidden="true">
+          <span class="hive-cell"></span><span class="hive-cell"></span
+          ><span class="hive-cell"></span><span class="hive-cell"></span
+          ><span class="hive-cell"></span><span class="hive-cell"></span
+          ><span class="hive-cell"></span><span class="hive-trail"></span
+          ><span class="hive-bee"></span
+          ><span class="hive-bee hive-bee--small"></span
+          ><span class="hive-bee hive-bee--tiny"></span>
+        </div>
+      </header>
+      <p id="admin-status" class="notice" role="status">Connexion au carnet…</p>
+      <form id="login-form" class="admin-auth" hidden>
+        <h2>Connexion</h2>
+        <label for="password">Mot de passe</label
+        ><input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          required
+          maxlength="512"
+        /><button class="btn" type="submit">Ouvrir mon carnet</button>
+      </form>
+      <div id="admin-app" hidden>
+        <div class="toolbar">
+          <button class="btn" id="new-episode" type="button">
+            + Nouvel épisode</button
+          ><button class="btn btn-secondary" id="copy-episode" type="button">
+            Reprendre les joueurs</button
+          ><button class="btn btn-secondary" id="logout" type="button">
+            Déconnexion
+          </button>
+        </div>
+        <div class="editor-grid">
+          <aside class="editor-sidebar">
+            <label for="admin-picker">Mes épisodes</label
+            ><select
+              id="admin-picker"
+              size="7"
+              aria-label="Mes épisodes"
+            ></select>
+          </aside>
+          <form id="episode-form">
+            <p class="episode-state" id="episode-state"></p>
+            <section class="editor-card">
+              <h3>01 / L’épisode</h3>
+              <div class="editor-row">
+                <div class="field">
+                  <label for="episode-number">Numéro</label
+                  ><input
+                    id="episode-number"
+                    type="number"
+                    min="1"
+                    max="999"
+                    required
+                  />
+                </div>
+                <div class="field">
+                  <label for="episode-title">Titre</label
+                  ><input
+                    id="episode-title"
+                    maxlength="160"
+                    required
+                    placeholder="Le calme avant l’essaim"
+                  />
+                </div>
+              </div>
+              <div class="field">
+                <label for="episode-summary">Introduction (facultatif)</label
+                ><textarea
+                  id="episode-summary"
+                  maxlength="4000"
+                  placeholder="Quelques mots pour poser le contexte…"
+                ></textarea>
+              </div>
+            </section>
+            <section class="editor-card">
+              <h3>02 / Le confessional</h3>
+              <div id="question-editor"></div>
+              <button
+                id="add-question"
+                type="button"
+                class="btn btn-secondary btn-small"
+              >
+                + Ajouter une question
+              </button>
+            </section>
+            <section class="editor-card">
+              <h3>03 / Le classement de confiance</h3>
+              <div class="toolbar">
+                <button
+                  id="copy-previous-ranking"
+                  type="button"
+                  class="btn btn-secondary"
+                >
+                  Reprendre le classement de l’épisode précédent
+                </button>
+                <button
+                  id="add-roster"
+                  type="button"
+                  class="btn btn-secondary btn-small"
+                >
+                  Ajouter les joueurs manquants
+                </button>
+              </div>
+              <div id="people-editor"></div>
+              <button
+                id="add-person"
+                type="button"
+                class="btn btn-secondary btn-small"
+              >
+                + Ajouter une personne
+              </button>
+            </section>
+            <section class="editor-card">
+              <h3>04 / Images</h3>
+              <label for="episode-images">Ajouter des images</label>
+              <input
+                id="episode-images"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                multiple
+              />
+              <p class="field-help">
+                JPG, PNG, WebP, GIF · 8 Mo par image · 20 maximum
+              </p>
+              <p id="image-upload-status" role="status"></p>
+              <div id="image-editor" class="image-editor"></div>
+            </section>
+            <div class="save-bar">
+              <p id="save-state">Aucune modification.</p>
+              <button type="submit" class="btn btn-secondary">
+                Enregistrer le brouillon</button
+              ><button
+                type="button"
+                class="btn btn-secondary"
+                id="preview-button"
+              >
+                Aperçu</button
+              ><button type="button" class="btn" id="publish-button">
+                Publier</button
+              ><button
+                type="button"
+                class="btn btn-danger"
+                id="unpublish-button"
+                hidden
+              >
+                Retirer du public
+              </button>
+            </div>
+            <section
+              id="preview"
+              class="preview-panel"
+              aria-label="Aperçu spectateur"
+              hidden
+            >
+              <p class="eyebrow">Aperçu privé · Non publié</p>
+              <div id="preview-content"></div>
+            </section>
+          </form>
+        </div>
+      </div>
+      <noscript>Active JavaScript pour utiliser le carnet.</noscript>
+    </main>
+    <script type="module" src="admin.js"></script>
+  </body>
+</html>
