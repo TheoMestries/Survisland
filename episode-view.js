@@ -1,4 +1,4 @@
-import { playerIdentity } from "./roster.js";
+import { playerIdentity, findPlayer } from "./roster.js";
 import { renderGallery } from "./episode-gallery.js";
 export const tiers = [
   { id: "S", label: "Confiance totale", note: "Le cœur de la ruche" },
@@ -90,7 +90,10 @@ function portraitButton(person, rank, total) {
   button.title = person.name;
   const identity = playerIdentity(person.name);
   identity.querySelector(".team-badge")?.remove();
-  button.append(identity);
+  const player = findPlayer(person.name);
+  const frame = el("span", "portrait-frame" + (player ? ` team-${player.team}` : ""));
+  frame.append(identity);
+  button.append(frame);
   if (rank) button.append(el("span", "rank-number", String(rank)));
   button.addEventListener("click", () => openPlayer(person, rank, total));
   return button;

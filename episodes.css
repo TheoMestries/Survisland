@@ -399,12 +399,19 @@ h4 {
   color: var(--cream);
   cursor: pointer;
 }
+.ranked-portrait .portrait-frame {
+  display: inline-flex;
+  flex-shrink: 0;
+  border-radius: 8px;
+  box-shadow: 0 0 0 3px var(--team-color, var(--honey));
+  transition: transform 0.18s ease;
+}
 .ranked-portrait .player-portrait {
   width: 92px;
   height: 92px;
   transition: transform 0.18s ease;
 }
-.ranked-portrait:hover .player-portrait {
+.ranked-portrait:hover .portrait-frame {
   transform: translateY(-3px);
 }
 .rank-number {
