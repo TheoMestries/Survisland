@@ -11,6 +11,24 @@ function notice(message, error = false) {
   $("#admin-status").textContent = message;
   $("#admin-status").classList.toggle("error", error);
 }
+function requireLogin() {
+  $("#login-form").hidden = false;
+  notice("Ta session a expiré. Reconnecte-toi ci-dessous : ta saisie reste dans cette page.", true);
+}
+let checkingSession = false;
+async function keepSessionAlive() {
+  if (!current || busy || checkingSession || document.hidden) return;
+  checkingSession = true;
+  try {
+    const session = await request("session");
+    csrf = session.csrf;
+    if (!session.authenticated) requireLogin();
+  } catch {
+    // A temporary network failure must never interrupt editing.
+  } finally {
+    checkingSession = false;
+  }
+}
 function markDirty() {
   dirty = true;
   $("#save-state").textContent = "Modifications non enregistrées.";
@@ -38,7 +56,13 @@ async function request(action, body) {
       "Le serveur PHP est indisponible. Ouvre le site via MAMP, puis réessaie.",
     );
   }
-  if (!response.ok) throw new Error(data.error || "La demande a échoué.");
+  if (!response.ok) {
+    if (current && action !== "login" && [401, 403].includes(response.status)) {
+      requireLogin();
+      throw new Error("Reconnecte-toi ci-dessous, puis réessaie. Ta saisie est conservée dans cette page.");
+    }
+    throw new Error(data.error || "La demande a échoué.");
+  }
   return data;
 }
 function canLeave() {
@@ -498,8 +522,16 @@ $("#login-form").addEventListener("submit", async (event) => {
   const btn = event.submitter;
   btn.disabled = true;
   try {
+    const session = await request("session");
+    csrf = session.csrf;
     await request("login", { password: $("#password").value });
-    await openApp();
+    if (current) {
+      $("#login-form").hidden = true;
+      $("#password").value = "";
+      notice("Reconnecté. Ta saisie est conservée ; tu peux enregistrer ou réessayer l’envoi des images.");
+    } else {
+      await openApp();
+    }
   } catch (error) {
     notice(error.message, true);
   } finally {
@@ -634,6 +666,9 @@ window.addEventListener("beforeunload", (event) => {
     event.returnValue = "";
   }
 });
+setInterval(keepSessionAlive, 5 * 60 * 1000);
+document.addEventListener("visibilitychange", keepSessionAlive);
+window.addEventListener("online", keepSessionAlive);
 try {
   const session = await request("session");
   csrf = session.csrf;

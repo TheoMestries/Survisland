@@ -75,10 +75,23 @@ try {
         if ($_SERVER['REQUEST_METHOD'] !== 'GET') fail('Méthode non autorisée.', 405);
         respond(['episodes' => array_values(array_filter(array_map(fn($e) => $e['published'] ?? null, $store['episodes'])))]);
     }
+    // Isolate sessions from the host's shared PHP cleanup (often 24 minutes).
+    $sessionDir = $dir . '/sessions';
+    if (!is_dir($sessionDir) && !mkdir($sessionDir, 0700, true)) throw new RuntimeException('Session storage unavailable');
+    ini_set('session.save_handler', 'files');
+    session_save_path($sessionDir);
+    ini_set('session.gc_maxlifetime', '43200');
+    ini_set('session.gc_probability', '1');
+    ini_set('session.gc_divisor', '100');
     session_name('survisland_admin');
     session_set_cookie_params(['httponly' => true, 'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off', 'samesite' => 'Strict', 'path' => rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/') . '/']);
     ini_set('session.use_strict_mode', '1');
-    session_start();
+    if (!session_start()) throw new RuntimeException('Session start failed');
+    if (isset($_SESSION['last_activity']) && $_SESSION['last_activity'] < time() - 43200) {
+        $_SESSION = [];
+        session_regenerate_id(true);
+    }
+    $_SESSION['last_activity'] = time();
     $_SESSION['csrf'] ??= bin2hex(random_bytes(32));
     if ($action === 'image') serveImage($store, $dir, $lock);
     $config = is_file($dir . '/config.php') ? require $dir . '/config.php' : [];
