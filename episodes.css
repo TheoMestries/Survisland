@@ -166,6 +166,140 @@
   font-size: 1.4rem;
   font-weight: 600;
 }
+.swap-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+  scroll-margin-top: 90px;
+}
+.swap-controls .swap-alert {
+  padding: 18px 28px;
+  border: 3px solid #fff0ae;
+  background: #ffc83d;
+  color: #241600;
+  font-size: clamp(1.05rem, 3.5vw, 1.35rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  animation: swap-pulse 1.2s ease-in-out infinite;
+}
+@keyframes swap-pulse {
+  0%, 100% {
+    background: #ffc83d;
+    box-shadow: 0 0 0 0 #ffb52b66, 0 0 15px #ffb52b66;
+  }
+  50% {
+    background: #fff1a3;
+    border-color: #ff9c32;
+    box-shadow: 0 0 0 9px #ffb52b22, 0 0 40px #ffb52bcc;
+  }
+}
+.swap-controls [aria-pressed="true"] {
+  background: var(--honey);
+  border-color: var(--honey);
+  color: var(--bg);
+}
+.swap-controls .swap-alert:disabled {
+  animation: none;
+  cursor: wait;
+}
+.swap-stage {
+  position: relative;
+  overflow: hidden;
+  margin-top: 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: radial-gradient(ellipse at bottom, #76521b55, var(--panel) 65%);
+}
+html.swap-playing {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+.swap-playing body {
+  position: fixed;
+  top: var(--swap-scroll-top);
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+}
+.swap-overlay[open] {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #17150ff5;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+.swap-overlay::backdrop { background: #17150f; }
+.swap-overlay .swap-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  transform-origin: center;
+}
+.swap-team-label {
+  position: absolute;
+  top: 16px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--team-color);
+}
+.swap-portrait {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 3px solid var(--team-color);
+  border-radius: 9px;
+  object-fit: cover;
+}
+.swap-hive {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 116px;
+  border: 3px solid #b77a21;
+  border-radius: 50% 50% 22% 22% / 85% 85% 18% 18%;
+  background:
+    linear-gradient(90deg, #75440944, transparent 35%, #fff0a52b 50%, #75440955),
+    repeating-linear-gradient(0deg, #b77a21 0 4px, #f5bf4f 5px 17px, #ffda78 18px 21px);
+  box-shadow: inset 0 3px 5px #ffedac99, 0 8px 20px #0005, 0 0 30px #f5bd4120;
+}
+.swap-hive::before {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 66px;
+  bottom: 9px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid #a36b1c;
+  border-radius: 50% 50% 28% 28%;
+  background: radial-gradient(ellipse at bottom, #3d2913, #171008 75%);
+  box-shadow: inset 0 5px 10px #000b, 0 2px 0 #ffdf8999;
+}
+.swap-hive-label {
+  position: absolute;
+  bottom: -25px;
+  left: 0;
+  width: 100%;
+  color: var(--cream);
+  text-align: center;
+  font-size: .8rem;
+  font-weight: 700;
+}
+@media (prefers-reduced-motion: reduce) {
+  .swap-controls .swap-alert { animation: none; }
+}
 .roster-team {
   margin-top: 28px;
   padding: 24px;
@@ -185,6 +319,9 @@
 }
 .roster-player {
   min-width: 0;
+}
+@media (min-width: 721px) {
+  .roster-swapped .roster-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 }
 .roster-player--eliminated .player-portrait {
   filter: grayscale(1);

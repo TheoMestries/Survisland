@@ -1,6 +1,7 @@
 import { el, renderEpisode } from "./episode-view.js";
-import { renderRoster } from "./roster.js";
-renderRoster(document.querySelector("#season-roster"));
+import { createRosterSwap } from "./roster-swap.js";
+const roster = createRosterSwap(document.querySelector("#season-roster"));
+roster.update();
 const status = document.querySelector("#viewer-status");
 try {
   const response = await fetch("api.php?action=public", { cache: "no-store" });
@@ -38,7 +39,7 @@ try {
         else link.removeAttribute("aria-current");
       });
       renderEpisode(document.querySelector("#episode-view"), episode);
-      renderRoster(document.querySelector("#season-roster"), episode);
+      roster.update(episode);
     }
     window.addEventListener("hashchange", show);
     show();

@@ -162,7 +162,7 @@ export function freshRanking() {
     .filter((player) => player.id !== "flopy19")
     .map((player) => ({ name: player.name, tier: "U", reason: "" }));
 }
-export function playerIdentity(name) {
+export function playerIdentity(name, teamId) {
   const player = findPlayer(name);
   const fragment = document.createDocumentFragment();
   if (!player) {
@@ -180,13 +180,14 @@ export function playerIdentity(name) {
   image.height = 800;
   image.loading = "lazy";
   const badge = document.createElement("span");
-  badge.className = "team-badge team-" + player.team;
-  badge.textContent = teams.find((team) => team.id === player.team).name;
+  badge.className = "team-badge team-" + (teamId || player.team);
+  badge.textContent = teams.find((team) => team.id === (teamId || player.team)).name;
   fragment.append(image, badge);
   return fragment;
 }
-export function renderRoster(container, episode = null) {
+export function renderRoster(container, episode = null, assignments = null) {
   container.replaceChildren();
+  container.classList.toggle("roster-swapped", Boolean(assignments));
   const eliminatedIds = new Set(
     (episode?.people || [])
       .filter((person) => person.eliminated)
@@ -194,18 +195,20 @@ export function renderRoster(container, episode = null) {
       .filter(Boolean),
   );
   for (const team of teams) {
+    const members = players.filter((player) => (assignments ? assignments[player.id] : player.team) === team.id);
+    if (!members.length) continue;
     const section = document.createElement("section");
     section.className = "roster-team team-" + team.id;
     const heading = document.createElement("h3");
     heading.textContent = team.name + " · " + team.color;
     const grid = document.createElement("div");
     grid.className = "roster-grid";
-    for (const player of players.filter((player) => player.team === team.id)) {
+    for (const player of members) {
       const card = document.createElement("article");
       card.className = "roster-player";
       const name = document.createElement("h4");
       name.textContent = player.name;
-      card.append(playerIdentity(player.name), name);
+      card.append(playerIdentity(player.name, team.id), name);
       if (eliminatedIds.has(player.id)) {
         card.classList.add("roster-player--eliminated");
         const badge = document.createElement("span");
