@@ -18,6 +18,14 @@ La candidature seule peut être ouverte directement dans un navigateur.
 - `admin.html` : carnet privé, ajout des questions et des joueurs, niveaux S à D, ordre dans chaque niveau, aperçu, brouillons et publication manuelle.
 - `api.php` : authentification et sauvegarde sur le serveur, sans base de données.
 
+### Visuel et effets sonores
+
+`bee-theme.css` harmonise la candidature, le confessional et l'administration. `site-audio.js` et `site-audio.css` ajoutent les effets sonores et leur bouton de contrôle. Les sons sont générés dans le navigateur et commencent uniquement après une interaction. Le choix « Son actif / Son coupé » est mémorisé dans ce navigateur ; un bouton reste accessible pendant le swap. Aucun son n'accompagne la saisie des réponses.
+
+Le swap dispose de sons de départ, de mélange, de redistribution et de fin. Le bouton « Revoir l'animation » permet de le rejouer ; les boutons avant/après conservent la navigation directe. La préférence système de réduction des animations est respectée. Déployer les nouveaux fichiers audio avec les fichiers HTML, JavaScript et CSS modifiés, puis recharger la page.
+
+La séquence animée utilise `swap-sequence.js`, `swap-particles.js`, `swap-scene.css` et `assets/images/swap-hive.svg`, chargés depuis `roster-swap.js` et `episodes.html`. Inclure ces fichiers dans le déploiement. Les effets de pollen sont dessinés localement ; le mode mobile limite leur nombre. Le visionnage mémorisé et les équipes définitives restent indépendants de l'ordre aléatoire de révélation.
+
 ### Mise en route
 
 Le confessional nécessite **PHP 8.1 ou supérieur avec mbstring**, disponible dans MAMP. Un hébergement uniquement statique (par exemple GitHub Pages) ne peut pas exécuter ce carnet.

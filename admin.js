@@ -1,6 +1,7 @@
 import { tiers, el, renderEpisode, rankedPeople } from "./episode-view.js";
 import { players, findPlayer, freshRanking, playerIdentity } from "./roster.js";
 import { imageUrl } from "./episode-gallery.js";
+import { playSound } from "./site-audio.js";
 const $ = (selector) => document.querySelector(selector);
 let csrf = "",
   records = [],
@@ -10,6 +11,7 @@ let csrf = "",
 function notice(message, error = false) {
   $("#admin-status").textContent = message;
   $("#admin-status").classList.toggle("error", error);
+  if (error) playSound("error");
 }
 function requireLogin() {
   $("#login-form").hidden = false;
@@ -267,6 +269,7 @@ async function uploadImages(files) {
     $("#episode-images").value = "";
     renderImages();
     $("#image-upload-status").textContent = `${uploaded} image(s) ajoutée(s).`;
+    if (uploaded && !failures.length) playSound("upload");
     if (failures.length) notice(failures.join("\n"), true);
     else
       notice("Images ajoutées. Enregistre le brouillon ou publie l’épisode.");
@@ -507,6 +510,7 @@ async function save(mode) {
           ? "Épisode retiré du public. Ton brouillon est conservé."
           : "Brouillon enregistré sur le serveur.";
     notice(message);
+    playSound("success");
     $("#save-state").textContent = message;
   } catch (error) {
     notice(error.message, true);
@@ -525,6 +529,7 @@ $("#login-form").addEventListener("submit", async (event) => {
     const session = await request("session");
     csrf = session.csrf;
     await request("login", { password: $("#password").value });
+    playSound("success");
     if (current) {
       $("#login-form").hidden = true;
       $("#password").value = "";

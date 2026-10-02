@@ -318,3 +318,731 @@ body::before {
     animation: none;
   }
 }
+
+/* Honey, dark wax and a little light: the shared visual language. */
+:root {
+  --bg: #100f0d;
+  --panel: #1c1914;
+  --cream: #fff4de;
+  --text: #ded5c5;
+  --muted: #b9ad98;
+  --line: #4c3d28;
+  --honey: #f8c75c;
+  --radius: 20px;
+  --hive-shadow: 0 18px 50px #00000024, inset 0 1px 0 #ffffff06;
+}
+body {
+  background:
+    radial-gradient(ellipse at 75% 0, #8b5b2326, transparent 48rem),
+    radial-gradient(ellipse at 0 50%, #7050250c, transparent 45rem), var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  opacity: 0.15;
+}
+body::after {
+  background: linear-gradient(90deg, #b87e29, #ffe7a0);
+  box-shadow: 0 0 14px #f8c75c50;
+}
+html {
+  scrollbar-color: #71532a #100f0d;
+}
+.site-nav {
+  position: relative;
+  margin-top: 20px;
+  min-height: 78px;
+  padding: 12px 24px;
+  gap: 16px;
+  border: 1px solid #e3b35b24;
+  border-radius: 18px;
+  background: linear-gradient(115deg, #292218eb, #171511ed 65%);
+  box-shadow:
+    0 12px 36px #0000001a,
+    inset 0 1px 0 #fff3d509;
+}
+.site-nav > .brand {
+  margin-right: auto;
+}
+.site-nav > a:not(.brand) {
+  padding: 8px 12px;
+  border-radius: 9px;
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    color 180ms,
+    background 180ms,
+    border-color 180ms;
+}
+.site-nav > a:not(.brand):hover {
+  background: #f8c75c0d;
+  color: var(--honey);
+}
+.brand img {
+  filter: drop-shadow(0 3px 8px #e7a82626);
+  transition: transform 250ms ease;
+}
+.brand:hover img {
+  transform: rotate(-12deg);
+}
+.season-tag {
+  border-color: #c9964347;
+  background: #f8c75c09;
+}
+h1 > span {
+  color: #ffd77e;
+  background: linear-gradient(110deg, #fff0c1, #fac55b 60%, #d79938);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.btn {
+  border-radius: 11px;
+  border-color: #ffdd88;
+  background: linear-gradient(135deg, #ffdb84, #efb643);
+  box-shadow:
+    0 5px 18px #dd981318,
+    inset 0 1px 0 #fff7d580;
+  transition:
+    transform 180ms,
+    box-shadow 180ms,
+    background 180ms,
+    border-color 180ms;
+}
+.btn:hover {
+  background: linear-gradient(135deg, #ffe6a8, #ffd070);
+  box-shadow:
+    0 8px 24px #dd98132b,
+    inset 0 1px 0 #fff7d580;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn-secondary {
+  border-color: #be914845;
+  background: linear-gradient(120deg, #c8942d10, #c8942d04);
+  color: var(--honey);
+  box-shadow: inset 0 1px 0 #ffffff04;
+}
+.btn-secondary:hover {
+  border-color: #c99b54;
+  background: #45331a;
+  box-shadow: 0 5px 18px #00000020;
+}
+.btn-danger {
+  border-color: #d9817360;
+  background: #d9817309;
+  box-shadow: none;
+}
+.btn-danger:hover {
+  background: #472820;
+  box-shadow: none;
+}
+.btn:disabled {
+  transform: none;
+  box-shadow: none;
+}
+.hero {
+  padding-top: 74px;
+  background: radial-gradient(ellipse at 80% 40%, #c6892730, transparent 55%);
+}
+.hero__subtitle {
+  font-size: 1.2rem;
+}
+.hero__media {
+  box-shadow:
+    0 25px 80px #00000065,
+    0 0 70px #f8c75c12;
+}
+.photo-tag {
+  border-radius: 7px;
+  backdrop-filter: blur(12px);
+}
+.season-ribbon {
+  border-block: 1px solid #ffe5a0;
+  background: linear-gradient(110deg, #dba042, #ffdd87 48%, #e2a543);
+  box-shadow: 0 4px 36px #d6931714;
+}
+.section--accent {
+  background:
+    linear-gradient(90deg, #1d1812f5, #1d1812d9),
+    url("assets/images/honeycomb.svg") right top / 78px 135px;
+}
+.section-heading::before {
+  background: linear-gradient(140deg, #ffe6a5, #e8a636);
+}
+.identity-card,
+.panel,
+.plan-card,
+.quote-box {
+  border-color: #d7aa5428;
+  background: linear-gradient(135deg, #282117, #1b1813 60%);
+  box-shadow: var(--hive-shadow);
+}
+.panel {
+  padding-block: 36px;
+}
+.panel--question {
+  border-left-color: var(--honey);
+  background: linear-gradient(120deg, #3b2b16, #221c14);
+}
+.plan-card {
+  border-top-color: #d9a64b;
+}
+.plan-card--danger {
+  background: linear-gradient(135deg, #382813, #211b13);
+}
+.quote-box {
+  border-color: #b9893e70;
+  background:
+    radial-gradient(ellipse at 100% 0, #f8c75c15, transparent 65%),
+    linear-gradient(135deg, #2f2314, #191611);
+}
+.media-placeholder {
+  box-shadow: 0 16px 45px #00000030;
+}
+.journal {
+  padding-top: 36px;
+}
+.journal-heading {
+  min-height: 284px;
+  padding: 42px 310px 42px 40px;
+  margin-bottom: 44px;
+  border: 1px solid #ddac5042;
+  border-radius: 26px;
+  background:
+    radial-gradient(ellipse at 100% 5%, #c68a2527, transparent 60%),
+    linear-gradient(115deg, #282016, #191610 75%);
+  box-shadow: var(--hive-shadow);
+}
+.journal-heading::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: url("assets/images/honeycomb.svg") right center / 86px 149px;
+  mask-image: linear-gradient(90deg, transparent 45%, #000);
+  opacity: 0.35;
+  pointer-events: none;
+}
+.journal-heading h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 4.5vw, 4rem);
+  line-height: 1.1;
+}
+.journal-heading > .eyebrow {
+  position: relative;
+  margin-bottom: 14px;
+}
+.hive-ornament {
+  top: 28px;
+  right: 28px;
+  filter: drop-shadow(0 12px 20px #00000020);
+}
+.hive-cell::after {
+  background: #251c10;
+}
+.journal-layout {
+  gap: 32px;
+}
+@media (min-width: 851px) {
+  .journal-layout > aside > nav {
+    max-height: calc(100svh - 56px);
+    overflow-y: auto;
+    padding: 6px 8px 8px 4px;
+    scrollbar-width: thin;
+  }
+}
+.episode-list-heading,
+.editor-sidebar > label {
+  padding-left: 12px;
+  border-left: 2px solid var(--honey);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.episode-link {
+  padding: 17px 46px 17px 18px;
+  border-color: #d7aa541f;
+  border-radius: 13px;
+  background: linear-gradient(120deg, #242017, #191611);
+  transition:
+    border-color 180ms,
+    background 180ms,
+    transform 180ms;
+}
+.episode-link[aria-current="true"] {
+  border-color: #b98b3e;
+  background: linear-gradient(115deg, #493319, #292015);
+  box-shadow:
+    inset 3px 0 var(--honey),
+    0 7px 22px #00000020;
+}
+.episode-link-number {
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+}
+.episode-heading {
+  padding: 32px 76px 32px 30px;
+  border-color: #a479394d;
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 100% 0, #f8c75c10, transparent 70%),
+    linear-gradient(125deg, #352615, #201b13 75%);
+  box-shadow: var(--hive-shadow);
+}
+.episode-heading h2 {
+  max-width: 24ch;
+  font-size: clamp(1.9rem, 3vw, 2.8rem);
+}
+.episode-heading p:last-child {
+  margin-bottom: 0;
+}
+.episode-heading::after {
+  top: 30px;
+}
+.subheading {
+  margin-bottom: 18px;
+  letter-spacing: -0.035em;
+}
+.answer-card {
+  padding: 30px;
+  border-color: #dbad522b;
+  border-top: 1px solid #c194465f;
+  background: linear-gradient(135deg, #292217, #1c1914 60%);
+  box-shadow: var(--hive-shadow);
+}
+.answer-card h4 {
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+.answer-card .multiline {
+  line-height: 1.9;
+  color: #dbd2c1;
+}
+.tier-row {
+  border-color: #aa854132;
+  border-radius: 16px;
+  background: linear-gradient(115deg, #282219, #181610);
+  box-shadow: var(--hive-shadow);
+}
+.tier-label {
+  background-image:
+    linear-gradient(150deg, #ffffff20, #00000016),
+    url("assets/images/honeycomb.svg");
+  background-size:
+    auto,
+    52px 90px;
+}
+.tier-label strong {
+  font-size: 2.35rem;
+  text-shadow: 0 1px 0 #ffffff38;
+}
+.tier-people {
+  gap: 20px 16px;
+  padding: 20px;
+}
+.rank-number {
+  min-height: 32px;
+  border: 1px solid #eab14922;
+  background: linear-gradient(160deg, #6e4a1e42, #3327133b);
+  border-radius: 8px;
+}
+.ranked-portrait .portrait-frame {
+  box-shadow:
+    0 0 0 2px var(--team-color, var(--honey)),
+    0 8px 18px #00000050;
+  transition:
+    transform 220ms,
+    box-shadow 220ms;
+}
+.ranked-portrait:hover .portrait-frame {
+  box-shadow:
+    0 0 0 3px var(--team-color, var(--honey)),
+    0 12px 24px #00000060;
+}
+.eliminated-section {
+  padding: 24px;
+  border: 1px solid #b3865033;
+  border-radius: 18px;
+  background: #20191280;
+}
+.eliminated-section > .subheading {
+  font-size: 1.2rem;
+  color: var(--muted);
+}
+.gallery-photo {
+  border-color: #d5a54a52;
+  border-radius: 18px;
+  box-shadow:
+    0 18px 40px #00000040,
+    0 0 0 5px #f8c75c04;
+}
+.gallery-controls .btn {
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+}
+.gallery-count {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+}
+.gallery-thumbnail {
+  opacity: 0.65;
+  transition:
+    opacity 180ms,
+    border-color 180ms;
+}
+.gallery-thumbnail:hover,
+.gallery-thumbnail[aria-current="true"] {
+  opacity: 1;
+}
+.season-roster {
+  border-color: #d3a4453b;
+  padding-top: 32px;
+}
+.season-roster summary {
+  padding-bottom: 8px;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  letter-spacing: -0.025em;
+}
+.season-roster summary::marker {
+  color: var(--honey);
+}
+.roster-team {
+  padding: 26px;
+  border-color: #cfab692e;
+  border-top: 2px solid var(--team-color);
+  border-radius: 20px;
+  background:
+    radial-gradient(
+      ellipse at 0 0,
+      color-mix(in srgb, var(--team-color) 7%, transparent),
+      transparent 65%
+    ),
+    linear-gradient(125deg, #242019, #191612);
+  box-shadow: var(--hive-shadow);
+}
+.roster-team h3 {
+  font-size: 1.02rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 22px;
+}
+.roster-player .player-portrait {
+  border: 1px solid color-mix(in srgb, var(--team-color) 35%, transparent);
+  border-radius: 12px;
+  background: #00000012;
+  box-shadow: 0 8px 20px #00000024;
+}
+.roster-player h4 {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+}
+.roster-player--eliminated {
+  text-align: center;
+}
+.player-dialog {
+  padding: 30px;
+  border-color: #e7b55085;
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse at 50% 0, #9b6b2638, transparent 26rem), #1b1711;
+  box-shadow: 0 32px 100px #00000099;
+}
+.player-dialog[open] {
+  animation: hive-dialog-enter 220ms ease-out;
+}
+.player-dialog::backdrop {
+  background: #070604db;
+  backdrop-filter: blur(9px);
+}
+.dialog-identity .player-portrait {
+  border: 1px solid #d6aa4750;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px #00000045;
+}
+.dialog-reason {
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  line-height: 1.85;
+}
+.editor-card,
+.admin-auth {
+  border-color: #b38a433e;
+  border-radius: 20px;
+  background: linear-gradient(125deg, #282116, #1b1813 65%);
+  box-shadow: var(--hive-shadow);
+}
+.editor-card > h3,
+.admin-auth h2 {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #d1a15126;
+  margin-bottom: 24px;
+}
+.edit-item,
+.image-edit-card {
+  border-color: #bc934030;
+  border-radius: 14px;
+  background: #110f0c73;
+}
+input,
+textarea,
+select {
+  border-color: #9b7a414a;
+  border-radius: 10px;
+  background: #110f0c;
+  box-shadow: inset 0 2px 5px #0000001f;
+  transition:
+    border-color 160ms,
+    box-shadow 160ms;
+}
+input::placeholder,
+textarea::placeholder {
+  color: #9e927e;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--honey);
+  box-shadow: 0 0 0 3px #f8c75c12;
+}
+#admin-picker {
+  padding: 8px;
+  height: 268px;
+}
+#admin-picker option {
+  padding: 12px;
+  border-radius: 7px;
+}
+#admin-picker option:checked {
+  color: var(--cream);
+  background: linear-gradient(#5a4020, #5a4020);
+}
+.save-bar {
+  bottom: 12px;
+  border-color: #c9964a78;
+  border-radius: 16px;
+  background: #251d12f5;
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 10px 44px #00000080,
+    inset 0 1px 0 #ffffff08;
+}
+.notice {
+  border-radius: 0 12px 12px 0;
+  background: #e9b5490b;
+}
+.empty-state {
+  border-color: #9b783f66;
+  background: linear-gradient(125deg, #282117, #191611);
+}
+.site-footer {
+  border-color: #c49b4738;
+  padding-block: 36px;
+}
+.site-footer > a:not(.brand) {
+  font-size: 0.8rem;
+  text-underline-offset: 5px;
+}
+@keyframes hive-dialog-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .episode-link:hover {
+    transform: translateX(3px);
+  }
+  .roster-player .player-portrait {
+    transition:
+      transform 200ms,
+      box-shadow 200ms;
+  }
+  .roster-player:hover .player-portrait {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px #00000048;
+  }
+}
+@media (max-width: 980px) {
+  .journal-heading {
+    padding: 36px 250px 36px 32px;
+  }
+  .hive-ornament {
+    right: 8px;
+    transform: scale(0.85);
+  }
+}
+@media (max-width: 850px) {
+  .episode-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .journal-layout {
+    gap: 28px;
+  }
+  .journal-layout > aside {
+    min-width: 0;
+  }
+  .episode-link {
+    height: 100%;
+  }
+  #admin-picker {
+    height: 180px;
+  }
+}
+@media (max-width: 720px) {
+  .site-nav {
+    margin-top: 12px;
+    padding: 12px 16px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .site-nav .brand {
+    font-size: 1.08rem;
+  }
+  .site-nav > a:not(.brand) {
+    padding: 7px 8px;
+    font-size: 0.68rem;
+  }
+  .site-nav .nav-link {
+    display: inline-flex;
+  }
+  .site-nav .season-tag {
+    font-size: 0.58rem;
+  }
+  .hero {
+    padding-top: 44px;
+  }
+  .hero__subtitle {
+    font-size: 1.05rem;
+  }
+  .journal {
+    padding-top: 24px;
+  }
+  .journal-heading {
+    min-height: 0;
+    padding: 28px 24px 105px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+  }
+  .journal-heading h1 {
+    font-size: clamp(2.1rem, 7.8vw, 3rem);
+  }
+  .hive-ornament {
+    position: absolute;
+    top: auto;
+    bottom: 8px;
+    right: 12px;
+    height: 230px;
+    margin: 0;
+    transform: scale(0.48);
+    transform-origin: right bottom;
+  }
+  .journal-heading::before {
+    mask-image: linear-gradient(120deg, transparent, #000);
+  }
+  .episode-heading {
+    padding: 24px 60px 24px 22px;
+  }
+  .episode-heading::after {
+    top: 24px;
+  }
+  .episode-heading h2 {
+    font-size: 1.9rem;
+  }
+  .answer-card {
+    padding: 24px;
+  }
+  .roster-team {
+    padding: 20px;
+  }
+  .roster-team h3 {
+    font-size: 0.92rem;
+  }
+  .tier-people {
+    padding: 16px;
+  }
+  .player-dialog {
+    padding: 24px;
+  }
+  .panel {
+    padding-block: 26px;
+  }
+  .save-bar {
+    bottom: 6px;
+    padding: 14px;
+  }
+}
+@media (max-width: 480px) {
+  .episode-link {
+    padding: 14px 14px 14px 16px;
+  }
+  .episode-link[aria-current="true"]::after {
+    width: 19px;
+    height: 17px;
+    top: 12px;
+    right: 8px;
+  }
+  .episode-link-number {
+    padding-right: 16px;
+    font-size: 0.58rem;
+  }
+  .episode-link-title {
+    font-size: 0.8rem;
+  }
+  .journal-heading {
+    padding-inline: 20px;
+  }
+  .answer-card,
+  .editor-card {
+    padding: 20px;
+  }
+  .answer-card h4 {
+    font-size: 1.08rem;
+  }
+  .tier-people {
+    padding: 12px;
+    gap: 18px 12px;
+  }
+  .tier-label strong {
+    font-size: 2rem;
+  }
+  .eliminated-section {
+    padding: 18px;
+  }
+  .roster-team {
+    padding: 16px;
+  }
+  .admin-auth {
+    padding: 24px;
+  }
+  .save-bar {
+    position: static;
+  }
+  .save-bar .btn {
+    min-height: 44px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .episode-link:hover,
+  .roster-player:hover .player-portrait,
+  .brand:hover img {
+    transform: none;
+  }
+}
+@media (forced-colors: active) {
+  h1 > span {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+  }
+}

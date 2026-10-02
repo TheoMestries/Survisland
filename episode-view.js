@@ -1,5 +1,6 @@
 import { playerIdentity, findPlayer } from "./roster.js";
 import { renderGallery } from "./episode-gallery.js";
+import { playSound } from "./site-audio.js";
 export const tiers = [
   { id: "S", label: "Confiance totale", note: "Le cœur de la ruche" },
   { id: "A", label: "Bonne confiance", note: "Des liens solides" },
@@ -41,9 +42,10 @@ function openPlayer(person, rank, total) {
       )
         dialog.close();
     });
-    dialog.addEventListener("close", () =>
-      document.body.classList.remove("modal-open"),
-    );
+    dialog.addEventListener("close", () => {
+      document.body.classList.remove("modal-open");
+      playSound("close");
+    });
     document.body.append(dialog);
   }
   const close = el(
@@ -52,6 +54,7 @@ function openPlayer(person, rank, total) {
     "Fermer ×",
   );
   close.type = "button";
+  close.dataset.sound = "none";
   close.autofocus = true;
   close.addEventListener("click", () => dialog.close());
   const title = el("h2", "", person.name);
@@ -82,6 +85,7 @@ function openPlayer(person, rank, total) {
 function portraitButton(person, rank, total) {
   const button = el("button", "ranked-portrait");
   button.type = "button";
+  button.dataset.sound = "open";
   button.setAttribute("aria-haspopup", "dialog");
   button.setAttribute(
     "aria-label",

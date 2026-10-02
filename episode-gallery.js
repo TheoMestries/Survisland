@@ -1,3 +1,5 @@
+import { playSound } from "./site-audio.js";
+
 export function imageUrl(id) {
   return `api.php?action=image&id=${encodeURIComponent(id)}`;
 }
@@ -39,6 +41,7 @@ export function renderGallery(container, images, episodeNumber) {
   next.className = previous.className;
   next.textContent = "→";
   next.setAttribute("aria-label", "Image suivante");
+  previous.dataset.sound = next.dataset.sound = "none";
   const count = document.createElement("span");
   count.className = "gallery-count";
   count.setAttribute("aria-live", "polite");
@@ -53,6 +56,7 @@ export function renderGallery(container, images, episodeNumber) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "gallery-thumbnail";
+    button.dataset.sound = "none";
     button.setAttribute("aria-label", `Voir l’image ${i + 1}`);
     const thumb = document.createElement("img");
     thumb.src = imageUrl(image.id);
@@ -63,8 +67,15 @@ export function renderGallery(container, images, episodeNumber) {
     thumbnails.append(button);
     return button;
   });
-  function show(position) {
-    index = (position + images.length) % images.length;
+  function show(position, initial = false) {
+    const nextIndex = (position + images.length) % images.length;
+    if (!initial && nextIndex !== index) {
+      playSound("select");
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        photo.animate([{ opacity: .4, transform: "scale(.985)" }, { opacity: 1, transform: "scale(1)" }], { duration: 220, easing: "ease-out" });
+      }
+    }
+    index = nextIndex;
     photo.src = imageUrl(images[index].id);
     photo.alt =
       images[index].caption || `Épisode ${episodeNumber} — Image ${index + 1}`;
@@ -103,5 +114,5 @@ export function renderGallery(container, images, episodeNumber) {
   });
   gallery.append(frame, controls, thumbnails);
   container.append(gallery);
-  show(0);
+  show(0, true);
 }
