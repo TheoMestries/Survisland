@@ -1,13 +1,9 @@
-import { players, teams, renderRoster } from "./roster.js";
+import { players, teams, renderRoster, swapTeams } from "./roster.js";
 import { playSound, createSoundToggle } from "./site-audio.js";
 import { createSwapSequence } from "./swap-sequence.js";
 
 // Composition du swap : les éliminations ultérieures ne changent pas ce tirage.
-export const swapTeams = {
-  avispa: ["byphantom", "dvil", "aelita", "hurakan", "jenna", "anthorus"],
-  conong: ["faeten", "kchouky", "paulo", "chifuyu", "mel", "flopy19"],
-  bumbar: ["templik", "sparya", "xyneas", "romain", "salamix", "twizzyx"],
-};
+export { swapTeams };
 const assignments = Object.fromEntries(
   Object.entries(swapTeams).flatMap(([team, ids]) =>
     ids.map((id) => [id, team]),

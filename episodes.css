@@ -138,6 +138,27 @@
   object-fit: contain;
   border-radius: 8px;
 }
+.team-history {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+.team-history .team-badge {
+  margin: 0;
+}
+.team-badge--previous {
+  opacity: 0.65;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+.editor-player-identity .team-history {
+  margin: 0;
+}
+.roster-player .team-history {
+  display: none;
+}
 .person-card .player-portrait {
   max-width: 200px;
 }

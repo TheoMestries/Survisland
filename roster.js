@@ -5,6 +5,18 @@ export const teams = [
   { id: "conong", name: "Conong", color: "Violet" },
 ];
 
+export const swapTeams = {
+  avispa: ["byphantom", "dvil", "aelita", "hurakan", "jenna", "anthorus"],
+  conong: ["faeten", "kchouky", "paulo", "chifuyu", "mel", "flopy19"],
+  bumbar: ["templik", "sparya", "xyneas", "romain", "salamix", "twizzyx"],
+};
+
+const swappedAssignments = Object.fromEntries(
+  Object.entries(swapTeams).flatMap(([team, ids]) =>
+    ids.map((id) => [id, team]),
+  ),
+);
+
 // Team assignments come from the season table, not the portrait backgrounds.
 export const players = [
   {
@@ -179,10 +191,24 @@ export function playerIdentity(name, teamId) {
   image.width = 800;
   image.height = 800;
   image.loading = "lazy";
+  const currentTeam = teamId || swappedAssignments[player.id] || player.team;
   const badge = document.createElement("span");
-  badge.className = "team-badge team-" + (teamId || player.team);
-  badge.textContent = teams.find((team) => team.id === (teamId || player.team)).name;
-  fragment.append(image, badge);
+  badge.className = "team-badge team-" + currentTeam;
+  badge.textContent = teams.find((team) => team.id === currentTeam).name;
+  fragment.append(image);
+  if (currentTeam !== player.team) {
+    const history = document.createElement("span");
+    history.className = "team-history";
+    const previous = document.createElement("del");
+    previous.className = "team-badge team-badge--previous team-" + player.team;
+    previous.textContent = teams.find((team) => team.id === player.team).name;
+    previous.title = "Ancienne équipe";
+    badge.title = "Nouvelle équipe";
+    history.append(previous, badge);
+    fragment.append(history);
+  } else {
+    fragment.append(badge);
+  }
   return fragment;
 }
 export function renderRoster(container, episode = null, assignments = null) {

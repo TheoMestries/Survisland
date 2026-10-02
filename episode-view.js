@@ -93,6 +93,7 @@ function portraitButton(person, rank, total) {
   );
   button.title = person.name;
   const identity = playerIdentity(person.name);
+  identity.querySelector(".team-history")?.remove();
   identity.querySelector(".team-badge")?.remove();
   const player = findPlayer(person.name);
   const frame = el("span", "portrait-frame" + (player ? ` team-${player.team}` : ""));
