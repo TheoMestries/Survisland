@@ -11,6 +11,21 @@ export const swapTeams = {
   bumbar: ["templik", "sparya", "xyneas", "romain", "salamix", "twizzyx"],
 };
 
+export const secondSwapMoves = [
+  { id: "flopy19", from: "conong", to: "bumbar" },
+  { id: "salamix", from: "bumbar", to: "avispa" },
+  { id: "aelita", from: "avispa", to: "conong" },
+];
+export const secondSwapTeams = Object.fromEntries(
+  Object.entries(swapTeams).map(([team, ids]) => [
+    team,
+    [
+      ...ids.filter((id) => !secondSwapMoves.some((move) => move.id === id)),
+      ...secondSwapMoves.filter((move) => move.to === team).map((move) => move.id),
+    ],
+  ]),
+);
+
 const swappedAssignments = Object.fromEntries(
   Object.entries(swapTeams).flatMap(([team, ids]) =>
     ids.map((id) => [id, team]),

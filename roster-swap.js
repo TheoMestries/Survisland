@@ -1,6 +1,7 @@
-import { players, teams, renderRoster, swapTeams } from "./roster.js";
+import { players, teams, renderRoster, swapTeams, secondSwapTeams, secondSwapMoves } from "./roster.js";
 import { playSound, createSoundToggle } from "./site-audio.js";
 import { createSwapSequence } from "./swap-sequence.js";
+import { createSecondSwapSequence } from "./swap-second-sequence.js";
 
 // Composition du swap : les éliminations ultérieures ne changent pas ce tirage.
 export { swapTeams };
@@ -11,6 +12,11 @@ const assignments = Object.fromEntries(
 );
 const seenKey = "survisland-season32-swap1-seen";
 const viewKey = "survisland-season32-swap1-view";
+const secondSeenKey = "survisland-season32-swap2-seen";
+const secondViewKey = "survisland-season32-swap2-view";
+const secondAssignments = Object.fromEntries(
+  Object.entries(secondSwapTeams).flatMap(([team, ids]) => ids.map((id) => [id, team])),
+);
 function readPreference(key) {
   try {
     return localStorage.getItem(key);
@@ -39,15 +45,24 @@ export function createRosterSwap(container) {
   const launch = node("button", "btn swap-alert", "⚠ Attention, swap !");
   launch.dataset.sound = "none";
   const before = node("button", "btn btn-secondary", "Avant le swap");
-  const after = node("button", "btn btn-secondary", "Après le swap");
-  const replay = node("button", "btn btn-secondary", "Revoir l’animation");
+  const after = node("button", "btn btn-secondary", "Après le swap 1");
+  const replay = node("button", "btn btn-secondary", "Revoir le swap 1");
+  const secondLaunch = node("button", "btn swap-alert", "⚠ Nouveau swap · 3 joueurs !");
+  const secondAfter = node("button", "btn btn-secondary", "Après le swap 2");
+  const secondReplay = node("button", "btn btn-secondary", "Revoir le swap 2");
+  secondLaunch.dataset.sound = secondReplay.dataset.sound = "none";
   replay.dataset.sound = "none";
-  for (const button of [launch, before, after, replay]) button.type = "button";
-  before.hidden = after.hidden = replay.hidden = true;
-  controls.append(launch, before, after, replay);
+  const buttons = [launch, before, after, replay, secondLaunch, secondAfter, secondReplay];
+  for (const button of buttons) button.type = "button";
+  before.hidden = after.hidden = replay.hidden = secondLaunch.hidden = secondAfter.hidden = secondReplay.hidden = true;
+  controls.append(...buttons);
   container.before(controls);
   let seen = readPreference(seenKey) === "yes";
-  let afterSwap = seen && readPreference(viewKey) !== "before";
+  let secondSeen = seen && readPreference(secondSeenKey) === "yes";
+  const savedView = readPreference(secondViewKey);
+  let currentView = secondSeen && savedView === "2" ? 2
+    : seen && readPreference(viewKey) !== "before" ? 1 : 0;
+  let playingSwap = 1;
   let episode = null,
     stage = null,
     generation = 0,
@@ -72,39 +87,48 @@ export function createRosterSwap(container) {
       window.scrollTo({ ...scrollPosition, behavior: "instant" });
       scrollPosition = null;
     }
-    launch.disabled = false;
-    replay.disabled = false;
+    for (const button of buttons) button.disabled = false;
   }
-  function showView(afterValue) {
+  function showView(value) {
     cleanup();
-    afterSwap = seen && afterValue;
-    renderRoster(container, episode, afterSwap ? assignments : null);
-    summary.textContent = afterSwap
-      ? "Les 18 joueurs · Les équipes après le swap"
+    currentView = !seen ? 0 : value === 2 && secondSeen ? 2 : value ? 1 : 0;
+    renderRoster(container, episode, currentView === 2 ? secondAssignments : currentView === 1 ? assignments : null);
+    summary.textContent = currentView
+      ? `Les 18 joueurs · Les équipes après le swap ${currentView}`
       : "Les 20 joueurs · Les équipes de départ";
     launch.hidden = seen;
     before.hidden = after.hidden = replay.hidden = !seen;
-    before.setAttribute("aria-pressed", String(!afterSwap));
-    after.setAttribute("aria-pressed", String(afterSwap));
-    if (seen) remember(viewKey, afterSwap ? "after" : "before");
+    secondLaunch.hidden = !seen || secondSeen;
+    secondAfter.hidden = secondReplay.hidden = !seen || !secondSeen;
+    before.setAttribute("aria-pressed", String(currentView === 0));
+    after.setAttribute("aria-pressed", String(currentView === 1));
+    secondAfter.setAttribute("aria-pressed", String(currentView === 2));
+    if (seen) {
+      remember(viewKey, currentView ? "after" : "before");
+      remember(secondViewKey, String(currentView));
+    }
   }
   function finish() {
-    seen = true;
-    remember(seenKey, "yes");
-    showView(true);
-    after.focus({ preventScroll: true });
+    if (playingSwap === 2) {
+      secondSeen = true;
+      remember(secondSeenKey, "yes");
+    } else {
+      seen = true;
+      remember(seenKey, "yes");
+    }
+    showView(playingSwap);
+    (playingSwap === 2 ? secondAfter : after).focus({ preventScroll: true });
   }
-  async function start() {
-    if (stage) return;
+  async function start(swap = 1) {
+    if (stage || (swap === 2 && !seen)) return;
+    playingSwap = swap;
     if (reducedMotion.matches) {
       playSound("swapEnd");
       finish();
       return;
     }
     const run = ++generation;
-    launch.disabled = true;
-    replay.disabled = true;
-    before.hidden = after.hidden = true;
+    for (const button of buttons) button.disabled = true;
     scrollPosition = { left: window.scrollX, top: window.scrollY };
     document.body.style.setProperty(
       "--swap-scroll-top",
@@ -113,7 +137,7 @@ export function createRosterSwap(container) {
     document.documentElement.classList.add("swap-playing");
     container.hidden = true;
     overlay = node("dialog", "swap-overlay");
-    overlay.setAttribute("aria-label", "Animation du swap des équipes");
+    overlay.setAttribute("aria-label", `Animation du swap ${swap} des équipes`);
     overlay.tabIndex = -1;
     overlay.addEventListener("cancel", (event) => event.preventDefault());
     overlay.addEventListener("wheel", (event) => event.preventDefault(), {
@@ -155,19 +179,24 @@ export function createRosterSwap(container) {
     stage.style.width = `${width}px`;
     stage.style.height = compact ? "690px" : "720px";
     fitStage();
-    sequence = createSwapSequence(stage, { players, teams, swapTeams });
+    sequence = swap === 2
+      ? createSecondSwapSequence(stage, { players, teams, moves: secondSwapMoves })
+      : createSwapSequence(stage, { players, teams, swapTeams });
     await sequence.finished;
     if (run === generation) finish();
   }
-  function play() {
-    start().catch(() => {
-      if (stage) showView(false);
+  function play(swap = 1) {
+    start(swap).catch(() => {
+      if (stage) showView(currentView);
     });
   }
-  launch.addEventListener("click", play);
-  replay.addEventListener("click", play);
-  before.addEventListener("click", () => showView(false));
-  after.addEventListener("click", () => showView(true));
+  launch.addEventListener("click", () => play(1));
+  replay.addEventListener("click", () => play(1));
+  secondLaunch.addEventListener("click", () => play(2));
+  secondReplay.addEventListener("click", () => play(2));
+  before.addEventListener("click", () => showView(0));
+  after.addEventListener("click", () => showView(1));
+  secondAfter.addEventListener("click", () => showView(2));
   function fitStage() {
     if (!stage) return;
     const viewport = window.visualViewport;
@@ -186,7 +215,7 @@ export function createRosterSwap(container) {
   return {
     update(nextEpisode = null) {
       episode = nextEpisode;
-      showView(afterSwap);
+      showView(currentView);
     },
   };
 }
