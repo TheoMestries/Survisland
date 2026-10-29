@@ -27,7 +27,7 @@ export const secondSwapTeams = Object.fromEntries(
 );
 
 const swappedAssignments = Object.fromEntries(
-  Object.entries(swapTeams).flatMap(([team, ids]) =>
+  Object.entries(secondSwapTeams).flatMap(([team, ids]) =>
     ids.map((id) => [id, team]),
   ),
 );
@@ -207,16 +207,19 @@ export function playerIdentity(name, teamId) {
   image.height = 800;
   image.loading = "lazy";
   const currentTeam = teamId || swappedAssignments[player.id] || player.team;
+  const previousTeam = teamId
+    ? player.team
+    : secondSwapMoves.find((move) => move.id === player.id)?.from || player.team;
   const badge = document.createElement("span");
   badge.className = "team-badge team-" + currentTeam;
   badge.textContent = teams.find((team) => team.id === currentTeam).name;
   fragment.append(image);
-  if (currentTeam !== player.team) {
+  if (currentTeam !== previousTeam) {
     const history = document.createElement("span");
     history.className = "team-history";
     const previous = document.createElement("del");
-    previous.className = "team-badge team-badge--previous team-" + player.team;
-    previous.textContent = teams.find((team) => team.id === player.team).name;
+    previous.className = "team-badge team-badge--previous team-" + previousTeam;
+    previous.textContent = teams.find((team) => team.id === previousTeam).name;
     previous.title = "Ancienne équipe";
     badge.title = "Nouvelle équipe";
     history.append(previous, badge);
