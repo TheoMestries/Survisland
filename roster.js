@@ -26,11 +26,32 @@ export const secondSwapTeams = Object.fromEntries(
   ]),
 );
 
-const swappedAssignments = Object.fromEntries(
-  Object.entries(secondSwapTeams).flatMap(([team, ids]) =>
-    ids.map((id) => [id, team]),
+const assignmentsBySwap = [null, swapTeams, secondSwapTeams].map((composition) =>
+  composition && Object.fromEntries(
+    Object.entries(composition).flatMap(([team, ids]) => ids.map((id) => [id, team])),
   ),
 );
+
+let viewedSwap = 0;
+try {
+  if (localStorage.getItem("survisland-season32-swap1-seen") === "yes") {
+    viewedSwap = localStorage.getItem("survisland-season32-swap2-seen") === "yes" ? 2 : 1;
+  }
+} catch { /* Keep in-page progress when storage is unavailable. */ }
+
+export function getViewedSwap() {
+  return viewedSwap;
+}
+
+export function markSwapViewed(swap) {
+  if (swap <= viewedSwap) return;
+  viewedSwap = Math.min(2, swap);
+  document.dispatchEvent(new Event("roster-progress-change"));
+}
+
+export function playerTeam(player, swap = viewedSwap) {
+  return assignmentsBySwap[swap]?.[player.id] || player.team;
+}
 
 // Team assignments come from the season table, not the portrait backgrounds.
 export const players = [
@@ -189,7 +210,7 @@ export function freshRanking() {
     .filter((player) => player.id !== "flopy19")
     .map((player) => ({ name: player.name, tier: "U", reason: "" }));
 }
-export function playerIdentity(name, teamId) {
+export function playerIdentity(name, teamId, swap = 2) {
   const player = findPlayer(name);
   const fragment = document.createDocumentFragment();
   if (!player) {
@@ -206,10 +227,10 @@ export function playerIdentity(name, teamId) {
   image.width = 800;
   image.height = 800;
   image.loading = "lazy";
-  const currentTeam = teamId || swappedAssignments[player.id] || player.team;
+  const currentTeam = teamId || playerTeam(player, swap);
   const previousTeam = teamId
     ? player.team
-    : secondSwapMoves.find((move) => move.id === player.id)?.from || player.team;
+    : (swap === 2 && secondSwapMoves.find((move) => move.id === player.id)?.from) || player.team;
   const badge = document.createElement("span");
   badge.className = "team-badge team-" + currentTeam;
   badge.textContent = teams.find((team) => team.id === currentTeam).name;

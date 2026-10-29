@@ -1,4 +1,4 @@
-import { players, teams, renderRoster, swapTeams, secondSwapTeams, secondSwapMoves } from "./roster.js";
+import { players, teams, renderRoster, swapTeams, secondSwapTeams, secondSwapMoves, markSwapViewed } from "./roster.js";
 import { playSound, createSoundToggle } from "./site-audio.js";
 import { createSwapSequence } from "./swap-sequence.js";
 import { createSecondSwapSequence } from "./swap-second-sequence.js";
@@ -116,6 +116,7 @@ export function createRosterSwap(container) {
       seen = true;
       remember(seenKey, "yes");
     }
+    markSwapViewed(playingSwap);
     showView(playingSwap);
     (playingSwap === 2 ? secondAfter : after).focus({ preventScroll: true });
   }

@@ -1,4 +1,4 @@
-import { playerIdentity, findPlayer } from "./roster.js";
+import { playerIdentity, findPlayer, playerTeam, getViewedSwap } from "./roster.js";
 import { renderGallery } from "./episode-gallery.js";
 import { playSound } from "./site-audio.js";
 export const tiers = [
@@ -60,7 +60,8 @@ function openPlayer(person, rank, total) {
   const title = el("h2", "", person.name);
   title.id = "player-dialog-name";
   const identity = el("div", "dialog-identity");
-  identity.append(playerIdentity(person.name));
+  identity.dataset.rosterIdentity = person.name;
+  identity.append(playerIdentity(person.name, undefined, getViewedSwap()));
   const state = person.eliminated
     ? "Éliminé · Hors classement"
     : rank
@@ -92,17 +93,31 @@ function portraitButton(person, rank, total) {
     `${person.name} · ${person.eliminated ? "Éliminé" : rank ? `Rang ${rank} sur ${total}` : "À classer"} · Voir la justification`,
   );
   button.title = person.name;
-  const identity = playerIdentity(person.name);
+  const identity = playerIdentity(person.name, undefined, getViewedSwap());
   identity.querySelector(".team-history")?.remove();
   identity.querySelector(".team-badge")?.remove();
   const player = findPlayer(person.name);
-  const frame = el("span", "portrait-frame" + (player ? ` team-${player.team}` : ""));
+  const frame = el("span", "portrait-frame" + (player ? ` team-${playerTeam(player)}` : ""));
+  if (player) frame.dataset.rosterPlayer = player.name;
   frame.append(identity);
   button.append(frame);
   if (rank) button.append(el("span", "rank-number", String(rank)));
   button.addEventListener("click", () => openPlayer(person, rank, total));
   return button;
 }
+
+// Update portraits in place so watching a swap preserves the episode and gallery.
+document.addEventListener("roster-progress-change", () => {
+  document.querySelectorAll(".portrait-frame[data-roster-player]").forEach((frame) => {
+    const player = findPlayer(frame.dataset.rosterPlayer);
+    if (!player) return;
+    frame.classList.remove("team-bumbar", "team-avispa", "team-hornet", "team-conong");
+    frame.classList.add(`team-${playerTeam(player)}`);
+  });
+  document.querySelectorAll("[data-roster-identity]").forEach((identity) => {
+    identity.replaceChildren(playerIdentity(identity.dataset.rosterIdentity, undefined, getViewedSwap()));
+  });
+});
 
 export function renderEpisode(container, episode) {
   document.querySelector("#player-dialog[open]")?.close();
