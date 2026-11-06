@@ -1,5 +1,5 @@
-import { el, renderEpisode } from "./episode-view.js?v=5f9c2819ac25f95a";
-import { createRosterSwap } from "./roster-swap.js?v=5f9c2819ac25f95a";
+import { el, renderEpisode } from "./episode-view.js?v=2aa61dd7924a2e40";
+import { createRosterSwap } from "./roster-swap.js?v=2aa61dd7924a2e40";
 const roster = createRosterSwap(document.querySelector("#season-roster"));
 roster.update();
 const status = document.querySelector("#viewer-status");

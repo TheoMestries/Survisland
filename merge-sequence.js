@@ -1,6 +1,6 @@
-import { playSound, startSwarm, startMusic } from "./site-audio.js?v=5f9c2819ac25f95a";
-import { createSwapParticles } from "./swap-particles.js?v=5f9c2819ac25f95a";
-import { playMergeTribute } from "./merge-tribute.js?v=5f9c2819ac25f95a";
+import { playSound, startSwarm, startMusic } from "./site-audio.js?v=2aa61dd7924a2e40";
+import { createSwapParticles } from "./swap-particles.js?v=2aa61dd7924a2e40";
+import { playMergeTribute } from "./merge-tribute.js?v=2aa61dd7924a2e40";
 
 function node(tag, className, text) {
   const element = document.createElement(tag);
@@ -63,7 +63,7 @@ export function createMergeSequence(stage, { players, teams, mergeTeams, previou
     wordmark.append(element);
     const bee = node("div", "sm-bee");
     const image = node("img", "sm-bee-sprite");
-    image.src = "assets/images/bee.svg?v=5f9c2819ac25f95a";
+    image.src = "assets/images/bee.svg?v=2aa61dd7924a2e40";
     image.alt = "";
     image.draggable = false;
     bee.append(image);
@@ -133,7 +133,7 @@ export function createMergeSequence(stage, { players, teams, mergeTeams, previou
   }
   async function run() {
     startedAt = performance.now();
-    music = startMusic("assets/audio/horn-of-plenty.mp3?v=5f9c2819ac25f95a");
+    music = startMusic("assets/audio/horn-of-plenty.mp3?v=2aa61dd7924a2e40");
     await Promise.race([
       Promise.all([music.ready, ...cards.map(({ image }) => image.decode().catch(() => {}))]),
       wait(1000, false),

@@ -1,5 +1,5 @@
-import { createSwapParticles } from "./swap-particles.js?v=5f9c2819ac25f95a";
-import { playSound, startSwarm } from "./site-audio.js?v=5f9c2819ac25f95a";
+import { createSwapParticles } from "./swap-particles.js?v=2aa61dd7924a2e40";
+import { playSound, startSwarm } from "./site-audio.js?v=2aa61dd7924a2e40";
 
 const timingScale = 0.55;
 
@@ -66,7 +66,7 @@ export function createSwapSequence(stage, { players, teams, swapTeams }) {
   const rings = el("div", "sw-core-rings");
   rings.append(el("span", ""), el("span", ""), el("span", ""));
   const hive = el("img", "sw-core-hive");
-  hive.src = "assets/images/swap-hive.svg?v=5f9c2819ac25f95a";
+  hive.src = "assets/images/swap-hive.svg?v=2aa61dd7924a2e40";
   hive.alt = "";
   core.append(
     el("div", "sw-vortex-ring"),

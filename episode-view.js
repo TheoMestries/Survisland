@@ -1,6 +1,6 @@
-import { playerIdentity, findPlayer, playerTeam, getViewedSwap, eliminationLabel, isJuryMember } from "./roster.js?v=5f9c2819ac25f95a";
-import { renderGallery } from "./episode-gallery.js?v=5f9c2819ac25f95a";
-import { playSound } from "./site-audio.js?v=5f9c2819ac25f95a";
+import { playerIdentity, playerDisplayName, findPlayer, playerTeam, getViewedSwap, eliminationLabel, isJuryMember } from "./roster.js?v=2aa61dd7924a2e40";
+import { renderGallery } from "./episode-gallery.js?v=2aa61dd7924a2e40";
+import { playSound } from "./site-audio.js?v=2aa61dd7924a2e40";
 const renderedEpisodes = new WeakMap();
 export const tiers = [
   { id: "S", label: "Confiance totale", note: "Le cœur de la ruche" },
@@ -28,7 +28,7 @@ export function rankedPeople(people) {
 
 function immunityIcon(className) {
   const icon = el("img", className);
-  icon.src = "assets/images/immunity-badge.svg?v=5f9c2819ac25f95a";
+  icon.src = "assets/images/immunity-badge.svg?v=2aa61dd7924a2e40";
   icon.alt = "";
   icon.width = 64;
   icon.height = 78;
@@ -68,7 +68,7 @@ function openPlayer(person, rank, total) {
   close.dataset.sound = "none";
   close.autofocus = true;
   close.addEventListener("click", () => dialog.close());
-  const title = el("h2", "", person.name);
+  const title = el("h2", "", playerDisplayName(person.name));
   title.id = "player-dialog-name";
   const identity = el("div", "dialog-identity");
   identity.dataset.rosterIdentity = person.name;
@@ -95,6 +95,7 @@ function openPlayer(person, rank, total) {
 }
 
 function portraitButton(person, rank, total) {
+  const name = playerDisplayName(person.name);
   const immune = Boolean(person.immune) && !person.eliminated;
   const button = el("button", "ranked-portrait");
   button.classList.toggle("has-immunity", immune);
@@ -103,9 +104,9 @@ function portraitButton(person, rank, total) {
   button.setAttribute("aria-haspopup", "dialog");
   button.setAttribute(
     "aria-label",
-    `${person.name}${immune ? " · Immunité" : ""} · ${person.eliminated ? eliminationLabel(person.name) : rank ? `Rang ${rank} sur ${total}` : "À classer"} · Voir la justification`,
+    `${name}${immune ? " · Immunité" : ""} · ${person.eliminated ? eliminationLabel(person.name) : rank ? `Rang ${rank} sur ${total}` : "À classer"} · Voir la justification`,
   );
-  button.title = immune ? `${person.name} · Immunité gagnée à cet épisode` : person.name;
+  button.title = immune ? `${name} · Immunité gagnée à cet épisode` : name;
   const identity = playerIdentity(person.name, undefined, getViewedSwap());
   identity.querySelector(".team-history")?.remove();
   identity.querySelector(".team-badge")?.remove();

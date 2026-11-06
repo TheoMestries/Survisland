@@ -1,8 +1,8 @@
-import { players, teams, renderRoster, swapTeams, secondSwapTeams, secondSwapMoves, mergeTeams, markSwapViewed, getViewedSwap } from "./roster.js?v=5f9c2819ac25f95a";
-import { playSound, createSoundToggle } from "./site-audio.js?v=5f9c2819ac25f95a";
-import { createSwapSequence } from "./swap-sequence.js?v=5f9c2819ac25f95a";
-import { createSecondSwapSequence } from "./swap-second-sequence.js?v=5f9c2819ac25f95a";
-import { createMergeSequence } from "./merge-sequence.js?v=5f9c2819ac25f95a";
+import { players, teams, renderRoster, swapTeams, secondSwapTeams, secondSwapMoves, mergeTeams, markSwapViewed, getViewedSwap } from "./roster.js?v=2aa61dd7924a2e40";
+import { playSound, createSoundToggle } from "./site-audio.js?v=2aa61dd7924a2e40";
+import { createSwapSequence } from "./swap-sequence.js?v=2aa61dd7924a2e40";
+import { createSecondSwapSequence } from "./swap-second-sequence.js?v=2aa61dd7924a2e40";
+import { createMergeSequence } from "./merge-sequence.js?v=2aa61dd7924a2e40";
 
 // Composition du swap : les éliminations ultérieures ne changent pas ce tirage.
 export { swapTeams };

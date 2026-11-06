@@ -49,9 +49,11 @@ Dans « Le classement de confiance », le bouton **Reprendre le classement de l�
 - **Bumbar (jaune)** : Salamix, TwiZzyx, Anthorus, Flopy19, Sheep.
 - **Avispa (bleu)** : Kchouky, Sparya, Paulo, Aelita, Hurakan.
 - **Hornet (vert)** : ByPhantom, Fusoya, Templik, DVil, Faeten.
-- **Conong (violet)** : XyneAs, Chifuyu, Jenna, Mel, Romain.
+- **Conong (violet)** : XyneAs, Chifuyu, Jenna, Melley, RomainLeroux.
 
 Les noms abrégés du tableau et ceux des portraits sont rapprochés automatiquement : Flopy / Flopy19, Mel / Melley, Romain / RomainLeroux et Aelita / Aelita A. Les couleurs des fonds des portraits ne servent pas à déterminer les équipes.
+
+Les épisodes et les animations affichent les pseudos du roster, même lorsqu'un ancien épisode contient encore « Mel » ou « Romain ». Ces anciens noms restent reconnus sans modifier les données enregistrées.
 
 Les nouveaux épisodes préchargent les 19 autres joueurs au niveau privé « À classer ». Flopy19 figure dans la galerie publique, mais n'est pas ajouté à son propre classement. Le bouton « Ajouter les joueurs manquants » complète un ancien brouillon sans écraser ses commentaires ni dupliquer les joueurs connus. Un épisode ne peut pas être publié tant qu'une personne encore en jeu reste « À classer ».
 

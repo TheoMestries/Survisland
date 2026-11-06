@@ -1,4 +1,4 @@
-import { playSound } from "./site-audio.js?v=5f9c2819ac25f95a";
+import { playSound } from "./site-audio.js?v=2aa61dd7924a2e40";
 
 // Historical departure order and teams, independent of later swaps and jury status.
 const departures = [

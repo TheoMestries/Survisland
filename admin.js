@@ -1,7 +1,7 @@
-import { tiers, el, renderEpisode, rankedPeople } from "./episode-view.js?v=5f9c2819ac25f95a";
-import { players, findPlayer, freshRanking, playerIdentity, eliminationLabel } from "./roster.js?v=5f9c2819ac25f95a";
-import { imageUrl } from "./episode-gallery.js?v=5f9c2819ac25f95a";
-import { playSound } from "./site-audio.js?v=5f9c2819ac25f95a";
+import { tiers, el, renderEpisode, rankedPeople } from "./episode-view.js?v=2aa61dd7924a2e40";
+import { players, findPlayer, freshRanking, playerIdentity, playerDisplayName, eliminationLabel } from "./roster.js?v=2aa61dd7924a2e40";
+import { imageUrl } from "./episode-gallery.js?v=2aa61dd7924a2e40";
+import { playSound } from "./site-audio.js?v=2aa61dd7924a2e40";
 const $ = (selector) => document.querySelector(selector);
 let csrf = "",
   records = [],
@@ -339,6 +339,7 @@ function renderPeople() {
   const ranked = rankedPeople(current.draft.people);
   const alive = current.draft.people.filter((person) => !person.eliminated);
   current.draft.people.forEach((person, i) => {
+    const name = playerDisplayName(person.name);
     const card = el("div", `edit-item tier-${person.tier}`);
     card.classList.toggle("is-eliminated", !!person.eliminated);
     const identity = el("div", "editor-player-identity");
@@ -358,7 +359,7 @@ function renderPeople() {
     const nameInput = field(
       card,
       "Pseudo",
-      person.name,
+      name,
       (value) => {
         person.name = value;
         identity.replaceChildren(playerIdentity(value));
@@ -380,7 +381,7 @@ function renderPeople() {
     elimination.type = "checkbox";
     elimination.setAttribute(
       "aria-label",
-      `${person.name || "Ce joueur"} : éliminé à cet épisode (ou auparavant)`,
+      `${name || "Ce joueur"} : éliminé à cet épisode (ou auparavant)`,
     );
     elimination.checked = !!person.eliminated;
     elimination.addEventListener("change", () => {
@@ -396,7 +397,7 @@ function renderPeople() {
     const immunityLabel = el("label", "immunity-toggle");
     const immunity = el("input");
     immunity.type = "checkbox";
-    immunity.setAttribute("aria-label", `${person.name || "Ce joueur"} : immunité gagnée à cet épisode`);
+    immunity.setAttribute("aria-label", `${name || "Ce joueur"} : immunité gagnée à cet épisode`);
     immunity.checked = !!person.immune;
     immunity.addEventListener("change", () => {
       person.immune = immunity.checked;
@@ -431,7 +432,7 @@ function renderPeople() {
     const up = button(
       "↑",
       () => moveItem(current.draft.people, i, -1, renderPeople),
-      `Monter ${person.name || "cette personne"} dans son niveau`,
+      `Monter ${name || "cette personne"} dans son niveau`,
     );
     up.disabled =
       !!person.eliminated ||
@@ -441,7 +442,7 @@ function renderPeople() {
     const down = button(
       "↓",
       () => moveItem(current.draft.people, i, 1, renderPeople),
-      `Descendre ${person.name || "cette personne"} dans son niveau`,
+      `Descendre ${name || "cette personne"} dans son niveau`,
     );
     down.disabled =
       !!person.eliminated ||
