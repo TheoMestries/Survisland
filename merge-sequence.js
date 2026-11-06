@@ -1,6 +1,6 @@
-import { playSound, startSwarm, startMusic } from "./site-audio.js?v=260cdf4a0d961684";
-import { createSwapParticles } from "./swap-particles.js?v=260cdf4a0d961684";
-import { playMergeTribute } from "./merge-tribute.js?v=260cdf4a0d961684";
+import { playSound, startSwarm, startMusic } from "./site-audio.js?v=5f9c2819ac25f95a";
+import { createSwapParticles } from "./swap-particles.js?v=5f9c2819ac25f95a";
+import { playMergeTribute } from "./merge-tribute.js?v=5f9c2819ac25f95a";
 
 function node(tag, className, text) {
   const element = document.createElement(tag);
@@ -63,7 +63,7 @@ export function createMergeSequence(stage, { players, teams, mergeTeams, previou
     wordmark.append(element);
     const bee = node("div", "sm-bee");
     const image = node("img", "sm-bee-sprite");
-    image.src = "assets/images/bee.svg?v=260cdf4a0d961684";
+    image.src = "assets/images/bee.svg?v=5f9c2819ac25f95a";
     image.alt = "";
     image.draggable = false;
     bee.append(image);
@@ -96,16 +96,17 @@ export function createMergeSequence(stage, { players, teams, mergeTeams, previou
     return { card, image, player, to, slot };
   });
 
-  function wait(duration) {
+  let timeScale = 1;
+  function wait(duration, scaled = true) {
     if (!active) return Promise.resolve();
     return new Promise((resolve) => {
-      const timer = setTimeout(() => { timers.delete(timer); resolve(); }, duration);
+      const timer = setTimeout(() => { timers.delete(timer); resolve(); }, duration * (scaled ? timeScale : 1));
       timers.set(timer, resolve);
     });
   }
   async function animate(element, frames, duration, delay = 0, easing = "cubic-bezier(.4,0,.2,1)") {
     if (!active) return;
-    const animation = element.animate(frames, { duration, delay, easing, fill: "both" });
+    const animation = element.animate(frames, { duration: duration * timeScale, delay: delay * timeScale, easing, fill: "both" });
     animations.add(animation);
     try {
       await animation.finished;
@@ -119,14 +120,29 @@ export function createMergeSequence(stage, { players, teams, mergeTeams, previou
     animations.delete(animation);
   }
 
-  let stopMusic;
+  let music;
+  let startedAt;
+  // File duration is also the silent fallback if playback is blocked or fails.
+  const fallbackDuration = 36389;
+  function remainingMusicTime() {
+    const track = music.track;
+    if (Number.isFinite(track.duration) && !track.error && (!track.paused || track.ended)) {
+      return Math.max(0, (track.duration - track.currentTime) * 1000);
+    }
+    return Math.max(0, fallbackDuration - (performance.now() - startedAt));
+  }
   async function run() {
-    stopMusic = startMusic("assets/audio/horn-of-plenty.mp3?v=260cdf4a0d961684");
+    startedAt = performance.now();
+    music = startMusic("assets/audio/horn-of-plenty.mp3?v=5f9c2819ac25f95a");
     await Promise.race([
-      Promise.all(cards.map(({ image }) => image.decode().catch(() => {}))),
-      wait(1000),
+      Promise.all([music.ready, ...cards.map(({ image }) => image.decode().catch(() => {}))]),
+      wait(1000, false),
     ]);
     if (!active) return;
+    // The unscaled sequence through the final layout lasts 49.11 seconds.
+    // Reserve a final hold and some room for image decoding/frame scheduling.
+    // Keeping one scale preserves the rhythm of every departure and cast reveal.
+    timeScale = Math.max(.1, (remainingMusicTime() - 3500) / 49110);
     await playMergeTribute(stage, { players, teams, animate, wait, isActive: () => active });
     if (!active) return;
     title.hidden = false;
@@ -247,12 +263,17 @@ export function createMergeSequence(stage, { players, teams, mergeTeams, previou
         { transform: pose(to.x, (compact ? 290 : 320) + Math.floor(index / columns) * (compact ? 115 : 160), compact ? 1.15 : 1.3) },
       ], 650)),
     ]);
-    await wait(1900);
+    // Hold the complete team until the track finishes, without looping the song.
+    // The event includes the audio output latency; the timeout handles stalled media.
+    await Promise.race([
+      music.finished.then((ended) => ended ? undefined : wait(remainingMusicTime(), false)),
+      wait(remainingMusicTime() + (music.track.paused ? 0 : 1000), false),
+    ]);
   }
   function cancel() {
     if (!active) return;
     active = false;
-    stopMusic?.();
+    music?.stop();
     stopSwarm?.();
     for (const animation of animations) animation.cancel();
     animations.clear();

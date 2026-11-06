@@ -11,16 +11,29 @@ function updateMusic() {
 export function startMusic(url) {
   const track = new Audio(url);
   track.volume = .65;
-  track.loop = true;
   musicTracks.add(track);
   updateMusic();
+  let settleFinished;
+  const finished = new Promise((resolve) => { settleFinished = resolve; });
+  const onEnded = () => settleFinished(true);
+  const onError = () => settleFinished(false);
+  track.addEventListener("ended", onEnded, { once: true });
+  track.addEventListener("error", onError, { once: true });
   // Start on the launch gesture, even muted, so toggling sound keeps its place.
-  void track.play().catch(() => {});
-  return () => {
-    track.pause();
-    track.removeAttribute("src");
-    track.load();
-    musicTracks.delete(track);
+  const ready = track.play().then(() => true, () => { settleFinished(false); return false; });
+  return {
+    track,
+    ready,
+    finished,
+    stop() {
+      settleFinished(false);
+      track.removeEventListener("ended", onEnded);
+      track.removeEventListener("error", onError);
+      track.pause();
+      track.removeAttribute("src");
+      track.load();
+      musicTracks.delete(track);
+    },
   };
 }
 let context;
