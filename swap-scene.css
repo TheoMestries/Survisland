@@ -421,7 +421,7 @@
   position: absolute;
   z-index: -1;
   inset: 0;
-  background: url("assets/images/honeycomb.svg?v=45c883405d02ed85") center / 160px;
+  background: url("assets/images/honeycomb.svg?v=260cdf4a0d961684") center / 160px;
   opacity: 0.055;
   mask-image: radial-gradient(ellipse at center, #000, transparent 80%);
   pointer-events: none;

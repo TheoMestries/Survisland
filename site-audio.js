@@ -1,7 +1,28 @@
-// Small, locally synthesised sounds: no audio downloads and no background music.
+// Synthesised effects and music played only during an explicit sequence.
 const STORAGE_KEY = "survisland:sound:enabled";
 const recentSounds = new Map();
 const voices = new Set();
+const musicTracks = new Set();
+
+function updateMusic() {
+  for (const track of musicTracks) track.muted = !enabled || document.hidden;
+}
+
+export function startMusic(url) {
+  const track = new Audio(url);
+  track.volume = .65;
+  track.loop = true;
+  musicTracks.add(track);
+  updateMusic();
+  // Start on the launch gesture, even muted, so toggling sound keeps its place.
+  void track.play().catch(() => {});
+  return () => {
+    track.pause();
+    track.removeAttribute("src");
+    track.load();
+    musicTracks.delete(track);
+  };
+}
 let context;
 let output;
 let enabled = true;
@@ -17,6 +38,7 @@ try {
 }
 
 function updateToggles() {
+  updateMusic();
   document.querySelectorAll(".sound-toggle").forEach((button) => {
     button.setAttribute("aria-pressed", String(enabled && !unsupported));
     button.setAttribute(
@@ -541,6 +563,7 @@ document.addEventListener("change", (event) => {
   playSound(event.target.closest("[data-sound]")?.dataset.sound ?? "select");
 });
 document.addEventListener("visibilitychange", () => {
+  updateMusic();
   if (!document.hidden) return;
   silence();
   if (context?.state === "running") void context.suspend().catch(() => {});

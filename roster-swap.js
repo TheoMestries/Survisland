@@ -1,8 +1,8 @@
-import { players, teams, renderRoster, swapTeams, secondSwapTeams, secondSwapMoves, mergeTeams, markSwapViewed } from "./roster.js?v=45c883405d02ed85";
-import { playSound, createSoundToggle } from "./site-audio.js?v=45c883405d02ed85";
-import { createSwapSequence } from "./swap-sequence.js?v=45c883405d02ed85";
-import { createSecondSwapSequence } from "./swap-second-sequence.js?v=45c883405d02ed85";
-import { createMergeSequence } from "./merge-sequence.js?v=45c883405d02ed85";
+import { players, teams, renderRoster, swapTeams, secondSwapTeams, secondSwapMoves, mergeTeams, markSwapViewed, getViewedSwap } from "./roster.js?v=260cdf4a0d961684";
+import { playSound, createSoundToggle } from "./site-audio.js?v=260cdf4a0d961684";
+import { createSwapSequence } from "./swap-sequence.js?v=260cdf4a0d961684";
+import { createSecondSwapSequence } from "./swap-second-sequence.js?v=260cdf4a0d961684";
+import { createMergeSequence } from "./merge-sequence.js?v=260cdf4a0d961684";
 
 // Composition du swap : les éliminations ultérieures ne changent pas ce tirage.
 export { swapTeams };
@@ -109,7 +109,7 @@ export function createRosterSwap(container) {
   let seen = readPreference(seenKey) === "yes";
   let secondSeen = seen && readPreference(secondSeenKey) === "yes";
   let mergeSeen = readPreference(mergeSeenKey) === "yes";
-  let currentView = 3;
+  let currentView = getViewedSwap();
   let playingSwap = 1;
   let episode = null,
     stage = null,
@@ -139,7 +139,7 @@ export function createRosterSwap(container) {
   }
   function showView(value) {
     cleanup();
-    currentView = value === 3 ? 3 : !seen ? 0 : value === 2 && secondSeen ? 2 : value ? 1 : 0;
+    currentView = value === 3 && mergeSeen ? 3 : !seen ? 0 : value >= 2 && secondSeen ? 2 : value ? 1 : 0;
     renderRoster(container, episode, currentView === 3 ? mergeAssignments : currentView === 2 ? secondAssignments : currentView === 1 ? assignments : null);
     summary.textContent = currentView === 3 ? "La réunification · UMARBB · 12 joueurs"
       : currentView
@@ -154,7 +154,7 @@ export function createRosterSwap(container) {
     before.setAttribute("aria-pressed", String(currentView === 0));
     after.setAttribute("aria-pressed", String(currentView === 1));
     secondAfter.setAttribute("aria-pressed", String(currentView === 2));
-    merged.hidden = currentView === 3;
+    merged.hidden = !mergeSeen || currentView === 3;
     mergeLaunch.textContent = mergeSeen ? "Revoir la réunification" : "Vivre la réunification";
     if (seen) {
       remember(viewKey, currentView ? "after" : "before");

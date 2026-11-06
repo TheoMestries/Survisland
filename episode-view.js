@@ -1,6 +1,7 @@
-import { playerIdentity, findPlayer, playerTeam, getViewedSwap, eliminationLabel, isJuryMember } from "./roster.js?v=45c883405d02ed85";
-import { renderGallery } from "./episode-gallery.js?v=45c883405d02ed85";
-import { playSound } from "./site-audio.js?v=45c883405d02ed85";
+import { playerIdentity, findPlayer, playerTeam, getViewedSwap, eliminationLabel, isJuryMember } from "./roster.js?v=260cdf4a0d961684";
+import { renderGallery } from "./episode-gallery.js?v=260cdf4a0d961684";
+import { playSound } from "./site-audio.js?v=260cdf4a0d961684";
+const renderedEpisodes = new WeakMap();
 export const tiers = [
   { id: "S", label: "Confiance totale", note: "Le cœur de la ruche" },
   { id: "A", label: "Bonne confiance", note: "Des liens solides" },
@@ -27,7 +28,7 @@ export function rankedPeople(people) {
 
 function immunityIcon(className) {
   const icon = el("img", className);
-  icon.src = "assets/images/immunity-badge.svg?v=45c883405d02ed85";
+  icon.src = "assets/images/immunity-badge.svg?v=260cdf4a0d961684";
   icon.alt = "";
   icon.width = 64;
   icon.height = 78;
@@ -130,9 +131,15 @@ document.addEventListener("roster-progress-change", () => {
   document.querySelectorAll("[data-roster-identity]").forEach((identity) => {
     identity.replaceChildren(playerIdentity(identity.dataset.rosterIdentity, undefined, getViewedSwap()));
   });
+  document.querySelectorAll("[data-rendered-episode]").forEach((container) => {
+    const episode = renderedEpisodes.get(container);
+    if (episode) renderDepartures(container, episode);
+  });
 });
 
 export function renderEpisode(container, episode) {
+  renderedEpisodes.set(container, episode);
+  container.dataset.renderedEpisode = "";
   document.querySelector("#player-dialog[open]")?.close();
   container.replaceChildren();
   const header = el("header", "episode-heading");
@@ -191,6 +198,12 @@ export function renderEpisode(container, episode) {
     board.append(row);
   });
   container.append(board);
+  renderDepartures(container, episode);
+}
+
+function renderDepartures(container, episode) {
+  container.querySelectorAll(":scope > .jury-section, :scope > .eliminated-section").forEach((section) => section.remove());
+  const alive = episode.people.filter((person) => !person.eliminated);
   const jury = episode.people.filter(isJuryMember);
   if (jury.length) {
     const section = el("section", "jury-section");

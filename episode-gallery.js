@@ -1,4 +1,4 @@
-import { playSound } from "./site-audio.js?v=45c883405d02ed85";
+import { playSound } from "./site-audio.js?v=260cdf4a0d961684";
 
 export function imageUrl(id) {
   return `api.php?action=image&id=${encodeURIComponent(id)}`;

@@ -33,11 +33,11 @@ export const mergeTeams = {
 const juryIds = new Set([...mergeTeams.umarbb, "kchouky"]);
 
 export function eliminationLabel(name) {
-  return juryIds.has(findPlayer(name)?.id) ? "Jury" : "Éliminé";
+  return viewedSwap === 3 && juryIds.has(findPlayer(name)?.id) ? "Jury" : "Éliminé";
 }
 
 export function isJuryMember(person) {
-  return Boolean(person.eliminated) && juryIds.has(findPlayer(person.name)?.id);
+  return viewedSwap === 3 && Boolean(person.eliminated) && juryIds.has(findPlayer(person.name)?.id);
 }
 
 const assignmentsBySwap = [null, swapTeams, secondSwapTeams, mergeTeams].map((composition) =>
@@ -46,14 +46,23 @@ const assignmentsBySwap = [null, swapTeams, secondSwapTeams, mergeTeams].map((co
   ),
 );
 
-const viewedSwap = 3;
+let viewedSwap = 0;
+try {
+  if (localStorage.getItem("survisland-season32-merge-seen") === "yes") viewedSwap = 3;
+  else if (localStorage.getItem("survisland-season32-swap1-seen") === "yes") {
+    viewedSwap = localStorage.getItem("survisland-season32-swap2-seen") === "yes" ? 2 : 1;
+  }
+} catch {
+  // Keep progression in memory when browser storage is unavailable.
+}
 
 export function getViewedSwap() {
   return viewedSwap;
 }
 
 export function markSwapViewed(swap) {
-  // Replaying historical swaps preserves the current merge stage.
+  // Replaying historical swaps must not undo an already revealed stage.
+  viewedSwap = Math.max(viewedSwap, swap);
   document.dispatchEvent(new Event("roster-progress-change"));
 }
 
@@ -68,140 +77,140 @@ export const players = [
     name: "Kchouky",
     team: "avispa",
     aliases: [],
-    image: "assets/images/players/kchouky.png?v=45c883405d02ed85",
+    image: "assets/images/players/kchouky.png?v=260cdf4a0d961684",
   },
   {
     id: "xyneas",
     name: "XyneAs",
     team: "conong",
     aliases: [],
-    image: "assets/images/players/xyneas.png?v=45c883405d02ed85",
+    image: "assets/images/players/xyneas.png?v=260cdf4a0d961684",
   },
   {
     id: "sparya",
     name: "Sparya",
     team: "avispa",
     aliases: [],
-    image: "assets/images/players/sparya.png?v=45c883405d02ed85",
+    image: "assets/images/players/sparya.png?v=260cdf4a0d961684",
   },
   {
     id: "twizzyx",
     name: "TwiZzyx",
     team: "bumbar",
     aliases: [],
-    image: "assets/images/players/twizzyx.png?v=45c883405d02ed85",
+    image: "assets/images/players/twizzyx.png?v=260cdf4a0d961684",
   },
   {
     id: "anthorus",
     name: "Anthorus",
     team: "bumbar",
     aliases: [],
-    image: "assets/images/players/anthorus.png?v=45c883405d02ed85",
+    image: "assets/images/players/anthorus.png?v=260cdf4a0d961684",
   },
   {
     id: "sheep",
     name: "Sheep",
     team: "bumbar",
     aliases: [],
-    image: "assets/images/players/sheep.png?v=45c883405d02ed85",
+    image: "assets/images/players/sheep.png?v=260cdf4a0d961684",
   },
   {
     id: "aelita",
     name: "Aelita",
     team: "avispa",
     aliases: ["Aelita A"],
-    image: "assets/images/players/aelita.png?v=45c883405d02ed85",
+    image: "assets/images/players/aelita.png?v=260cdf4a0d961684",
   },
   {
     id: "chifuyu",
     name: "Chifuyu",
     team: "conong",
     aliases: [],
-    image: "assets/images/players/chifuyu.png?v=45c883405d02ed85",
+    image: "assets/images/players/chifuyu.png?v=260cdf4a0d961684",
   },
   {
     id: "byphantom",
     name: "ByPhantom",
     team: "hornet",
     aliases: [],
-    image: "assets/images/players/byphantom.png?v=45c883405d02ed85",
+    image: "assets/images/players/byphantom.png?v=260cdf4a0d961684",
   },
   {
     id: "mel",
     name: "Mel",
     team: "conong",
     aliases: ["Melley"],
-    image: "assets/images/players/mel.png?v=45c883405d02ed85",
+    image: "assets/images/players/mel.png?v=260cdf4a0d961684",
   },
   {
     id: "romain",
     name: "Romain",
     team: "conong",
     aliases: ["RomainLeroux"],
-    image: "assets/images/players/romain.png?v=45c883405d02ed85",
+    image: "assets/images/players/romain.png?v=260cdf4a0d961684",
   },
   {
     id: "flopy19",
     name: "Flopy19",
     team: "bumbar",
     aliases: ["Flopy"],
-    image: "assets/images/players/flopy19.png?v=45c883405d02ed85",
+    image: "assets/images/players/flopy19.png?v=260cdf4a0d961684",
   },
   {
     id: "paulo",
     name: "Paulo",
     team: "avispa",
     aliases: [],
-    image: "assets/images/players/paulo.png?v=45c883405d02ed85",
+    image: "assets/images/players/paulo.png?v=260cdf4a0d961684",
   },
   {
     id: "templik",
     name: "Templik",
     team: "hornet",
     aliases: [],
-    image: "assets/images/players/templik.png?v=45c883405d02ed85",
+    image: "assets/images/players/templik.png?v=260cdf4a0d961684",
   },
   {
     id: "salamix",
     name: "Salamix",
     team: "bumbar",
     aliases: [],
-    image: "assets/images/players/salamix.png?v=45c883405d02ed85",
+    image: "assets/images/players/salamix.png?v=260cdf4a0d961684",
   },
   {
     id: "fusoya",
     name: "Fusoya",
     team: "hornet",
     aliases: [],
-    image: "assets/images/players/fusoya.png?v=45c883405d02ed85",
+    image: "assets/images/players/fusoya.png?v=260cdf4a0d961684",
   },
   {
     id: "dvil",
     name: "DVil",
     team: "hornet",
     aliases: [],
-    image: "assets/images/players/dvil.png?v=45c883405d02ed85",
+    image: "assets/images/players/dvil.png?v=260cdf4a0d961684",
   },
   {
     id: "hurakan",
     name: "Hurakan",
     team: "avispa",
     aliases: [],
-    image: "assets/images/players/hurakan.png?v=45c883405d02ed85",
+    image: "assets/images/players/hurakan.png?v=260cdf4a0d961684",
   },
   {
     id: "faeten",
     name: "Faeten",
     team: "hornet",
     aliases: [],
-    image: "assets/images/players/faeten.png?v=45c883405d02ed85",
+    image: "assets/images/players/faeten.png?v=260cdf4a0d961684",
   },
   {
     id: "jenna",
     name: "Jenna",
     team: "conong",
     aliases: [],
-    image: "assets/images/players/jenna.png?v=45c883405d02ed85",
+    image: "assets/images/players/jenna.png?v=260cdf4a0d961684",
   },
 ];
 

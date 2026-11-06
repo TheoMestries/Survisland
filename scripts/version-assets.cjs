@@ -23,7 +23,7 @@ let changed = 0;
 for (const file of sourceFiles.filter(name => /\.(html|js|css)$/.test(name))) {
   const filename = path.join(root, file);
   const source = fs.readFileSync(filename, 'utf8');
-  const updated = source.replace(/(["'])([^"'\s<>]+\.(?:js|css|svg|png|webp|jpe?g|gif)(?:\?v=[a-f0-9]+)?)\1/g,
+  const updated = source.replace(/(["'])([^"'\s<>]+\.(?:js|css|svg|png|webp|jpe?g|gif|mp3)(?:\?v=[a-f0-9]+)?)\1/g,
     (match, quote, url) => {
       if (/^(?:[a-z]+:|\/\/)/i.test(url)) return match;
       const asset = url.replace(/\?v=[a-f0-9]+$/, '');
