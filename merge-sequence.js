@@ -1,6 +1,6 @@
-import { playSound, startSwarm } from "./site-audio.js";
-import { createSwapParticles } from "./swap-particles.js";
-import { playMergeTribute } from "./merge-tribute.js";
+import { playSound, startSwarm } from "./site-audio.js?v=45c883405d02ed85";
+import { createSwapParticles } from "./swap-particles.js?v=45c883405d02ed85";
+import { playMergeTribute } from "./merge-tribute.js?v=45c883405d02ed85";
 
 function node(tag, className, text) {
   const element = document.createElement(tag);
@@ -63,7 +63,7 @@ export function createMergeSequence(stage, { players, teams, mergeTeams, previou
     wordmark.append(element);
     const bee = node("div", "sm-bee");
     const image = node("img", "sm-bee-sprite");
-    image.src = "assets/images/bee.svg";
+    image.src = "assets/images/bee.svg?v=45c883405d02ed85";
     image.alt = "";
     image.draggable = false;
     bee.append(image);

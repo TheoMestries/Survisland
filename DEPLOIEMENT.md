@@ -113,6 +113,19 @@ Si le site utilise un CDN ou un cache de pages, exclure `api.php` de la mise en 
 
 ## 5. Mises à jour suivantes
 
+Avant chaque commit de mise à jour, lancer `node scripts/version-assets.cjs`.
+Le script calcule une version à partir du contenu public et l’ajoute aux URL
+des scripts, styles et images, y compris aux imports JavaScript internes.
+Inclure tous les fichiers ainsi modifiés dans le commit, puis pousser et faire
+le pull sur le serveur. Node n’est nécessaire que pour préparer cette version,
+pas pour faire fonctionner le site. Une deuxième exécution sans changement
+doit annoncer zéro fichier modifié.
+
+Les pages HTML doivent rester revalidées à chaque visite : ne pas leur appliquer
+une règle Cloudflare qui conserve une ancienne page complète. Si une telle règle
+existe déjà, purger ces pages lors de ce premier déploiement. Les fichiers publics
+versionnés peuvent rester en cache ; leur URL change à la prochaine mise à jour.
+
 Une fois le site en ligne, saisir les nouveaux épisodes dans l'administration du serveur.
 
 Pour mettre à jour le code, transférer les fichiers HTML, CSS, JS, PHP et les ressources nécessaires, **sans remplacer le dossier `private/` du serveur par une ancienne copie locale**. Sauvegarder régulièrement ce dossier complet, images comprises, dans un emplacement non public.

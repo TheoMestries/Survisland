@@ -1,5 +1,5 @@
-import { playSound, startSwarm } from "./site-audio.js";
-import { createSwapParticles } from "./swap-particles.js";
+import { playSound, startSwarm } from "./site-audio.js?v=45c883405d02ed85";
+import { createSwapParticles } from "./swap-particles.js?v=45c883405d02ed85";
 
 // A three-way exchange through a luminous triangle, separate from the hive draw.
 export function createSecondSwapSequence(stage, { players, teams, moves }) {

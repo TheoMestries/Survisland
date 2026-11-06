@@ -1,6 +1,6 @@
-import { playerIdentity, findPlayer, playerTeam, getViewedSwap, eliminationLabel, isJuryMember } from "./roster.js";
-import { renderGallery } from "./episode-gallery.js";
-import { playSound } from "./site-audio.js";
+import { playerIdentity, findPlayer, playerTeam, getViewedSwap, eliminationLabel, isJuryMember } from "./roster.js?v=45c883405d02ed85";
+import { renderGallery } from "./episode-gallery.js?v=45c883405d02ed85";
+import { playSound } from "./site-audio.js?v=45c883405d02ed85";
 export const tiers = [
   { id: "S", label: "Confiance totale", note: "Le cœur de la ruche" },
   { id: "A", label: "Bonne confiance", note: "Des liens solides" },
@@ -27,7 +27,7 @@ export function rankedPeople(people) {
 
 function immunityIcon(className) {
   const icon = el("img", className);
-  icon.src = "assets/images/immunity-badge.svg";
+  icon.src = "assets/images/immunity-badge.svg?v=45c883405d02ed85";
   icon.alt = "";
   icon.width = 64;
   icon.height = 78;

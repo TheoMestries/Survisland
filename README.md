@@ -26,6 +26,8 @@ Le swap dispose de sons de départ, de mélange, de redistribution et de fin. Le
 
 La séquence animée utilise `swap-sequence.js`, `swap-particles.js`, `swap-scene.css` et `assets/images/swap-hive.svg`, chargés depuis `roster-swap.js` et `episodes.html`. Inclure ces fichiers dans le déploiement. Les effets de pollen sont dessinés localement ; le mode mobile limite leur nombre. Le visionnage mémorisé et les équipes définitives restent indépendants de l'ordre aléatoire de révélation.
 
+Le deuxième swap utilise aussi `swap-second-sequence.js` : Flopy19 rejoint Bumbar, Salamix rejoint Avispa et Aelita rejoint Conong. Son bouton apparaît uniquement après le visionnage du premier swap dans ce navigateur. Après visionnage, les trois compositions et les deux animations restent accessibles ; la dernière composition choisie est mémorisée.
+
 ### Mise en route
 
 Le confessional nécessite **PHP 8.1 ou supérieur avec mbstring**, disponible dans MAMP. Un hébergement uniquement statique (par exemple GitHub Pages) ne peut pas exécuter ce carnet.
@@ -56,6 +58,8 @@ Les nouveaux épisodes préchargent les 19 autres joueurs au niveau privé « À
 Pour chaque épisode, cocher « Éliminé à cet épisode (ou auparavant) » sur les joueurs sortis du jeu. Plusieurs éliminés sont possibles. Leur contenu est conservé mais ils apparaissent hors classement, sans rang chiffré. Les nouveaux épisodes reprennent les éliminations du dernier épisode enregistré, et « Reprendre les joueurs » copie les statuts de l'épisode sélectionné. Ces statuts restent modifiables indépendamment pour chaque épisode, sans modifier l'historique.
 
 La tierlist publique présente uniquement les portraits cliquables et les rangs continus de 1 à N parmi les joueurs encore en jeu du classement. L'ordre suit S, A, B, C, D, puis l'ordre manuel au sein de chaque niveau. Un clic ouvre une modale avec le portrait, l'équipe et la justification si elle existe. La modale se ferme avec son bouton, Échap ou un clic à l'extérieur. L'aperçu privé utilise le même affichage ; les joueurs « À classer » n'ont pas encore de numéro.
+
+L’option **Immunité gagnée à cet épisode** permet de sélectionner plusieurs gagnants. Les portraits des gagnants encore en jeu portent un bouclier alvéolé avec une couronne abeille, dans l’aperçu et la tierlist publique. L’immunité est propre à chaque épisode : elle est remise à zéro pour un nouvel épisode, y compris avec « Reprendre les joueurs ». Reprendre un classement précédent conserve les immunités déjà sélectionnées dans l’épisode courant. Enregistrer le brouillon puis publier pour rendre les changements visibles aux spectateurs.
 
 ### Images des épisodes
 
