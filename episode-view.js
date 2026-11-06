@@ -1,4 +1,4 @@
-import { playerIdentity, findPlayer, playerTeam, getViewedSwap } from "./roster.js";
+import { playerIdentity, findPlayer, playerTeam, getViewedSwap, eliminationLabel, isJuryMember } from "./roster.js";
 import { renderGallery } from "./episode-gallery.js";
 import { playSound } from "./site-audio.js";
 export const tiers = [
@@ -23,6 +23,16 @@ export function rankedPeople(people) {
         tiers.findIndex((t) => t.id === a.tier) -
         tiers.findIndex((t) => t.id === b.tier),
     );
+}
+
+function immunityIcon(className) {
+  const icon = el("img", className);
+  icon.src = "assets/images/immunity-badge.svg";
+  icon.alt = "";
+  icon.width = 64;
+  icon.height = 78;
+  icon.setAttribute("aria-hidden", "true");
+  return icon;
 }
 
 function openPlayer(person, rank, total) {
@@ -63,7 +73,7 @@ function openPlayer(person, rank, total) {
   identity.dataset.rosterIdentity = person.name;
   identity.append(playerIdentity(person.name, undefined, getViewedSwap()));
   const state = person.eliminated
-    ? "Éliminé · Hors classement"
+    ? `${eliminationLabel(person.name)} · Hors classement`
     : rank
       ? `Confiance : ${rank} / ${total} · ${tiers.find((t) => t.id === person.tier)?.label || ""}`
       : "À classer";
@@ -71,7 +81,7 @@ function openPlayer(person, rank, total) {
     close,
     identity,
     title,
-    el("p", "eyebrow", state),
+    el("p", "eyebrow", person.immune && !person.eliminated ? `Immunité · ${state}` : state),
     el("h3", "", "Ma justification"),
     el(
       "p",
@@ -84,15 +94,17 @@ function openPlayer(person, rank, total) {
 }
 
 function portraitButton(person, rank, total) {
+  const immune = Boolean(person.immune) && !person.eliminated;
   const button = el("button", "ranked-portrait");
+  button.classList.toggle("has-immunity", immune);
   button.type = "button";
   button.dataset.sound = "open";
   button.setAttribute("aria-haspopup", "dialog");
   button.setAttribute(
     "aria-label",
-    `${person.name} · ${person.eliminated ? "Éliminé" : rank ? `Rang ${rank} sur ${total}` : "À classer"} · Voir la justification`,
+    `${person.name}${immune ? " · Immunité" : ""} · ${person.eliminated ? eliminationLabel(person.name) : rank ? `Rang ${rank} sur ${total}` : "À classer"} · Voir la justification`,
   );
-  button.title = person.name;
+  button.title = immune ? `${person.name} · Immunité gagnée à cet épisode` : person.name;
   const identity = playerIdentity(person.name, undefined, getViewedSwap());
   identity.querySelector(".team-history")?.remove();
   identity.querySelector(".team-badge")?.remove();
@@ -100,6 +112,7 @@ function portraitButton(person, rank, total) {
   const frame = el("span", "portrait-frame" + (player ? ` team-${playerTeam(player)}` : ""));
   if (player) frame.dataset.rosterPlayer = player.name;
   frame.append(identity);
+  if (immune) frame.append(immunityIcon("immunity-badge"));
   button.append(frame);
   if (rank) button.append(el("span", "rank-number", String(rank)));
   button.addEventListener("click", () => openPlayer(person, rank, total));
@@ -111,7 +124,7 @@ document.addEventListener("roster-progress-change", () => {
   document.querySelectorAll(".portrait-frame[data-roster-player]").forEach((frame) => {
     const player = findPlayer(frame.dataset.rosterPlayer);
     if (!player) return;
-    frame.classList.remove("team-bumbar", "team-avispa", "team-hornet", "team-conong");
+    frame.classList.remove("team-bumbar", "team-avispa", "team-hornet", "team-conong", "team-umarbb");
     frame.classList.add(`team-${playerTeam(player)}`);
   });
   document.querySelectorAll("[data-roster-identity]").forEach((identity) => {
@@ -155,6 +168,11 @@ export function renderEpisode(container, episode) {
   const ranked = rankedPeople(episode.people);
   const alive = episode.people.filter((person) => !person.eliminated);
   board.append(el("h3", "subheading", "À qui je confie mon miel"));
+  if (alive.some((person) => person.immune)) {
+    const legend = el("p", "immunity-legend");
+    legend.append(immunityIcon("immunity-legend-icon"), document.createTextNode("Immunité gagnée à cet épisode"));
+    board.append(legend);
+  }
   tiers.forEach((tier) => {
     if (tier.id === "U" && !alive.some((person) => person.tier === "U")) return;
     const row = el("div", `tier-row tier-${tier.id}`);
@@ -173,7 +191,16 @@ export function renderEpisode(container, episode) {
     board.append(row);
   });
   container.append(board);
-  const eliminated = episode.people.filter((person) => person.eliminated);
+  const jury = episode.people.filter(isJuryMember);
+  if (jury.length) {
+    const section = el("section", "jury-section");
+    section.append(el("h3", "subheading", "Jury"));
+    const portraits = el("div", "jury-portraits");
+    jury.forEach((person) => portraits.append(portraitButton(person, 0, alive.length)));
+    section.append(portraits);
+    container.append(section);
+  }
+  const eliminated = episode.people.filter((person) => person.eliminated && !isJuryMember(person));
   if (eliminated.length) {
     const section = el("section", "eliminated-section");
     section.append(

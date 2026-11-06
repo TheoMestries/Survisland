@@ -420,6 +420,14 @@ export function playSound(name = "click", options = {}) {
       wings(0.24, 0.11);
       note(350, 0.06, 0.2, 0.09, "sine", 285);
       break;
+    case "tribute":
+      note(98, 0, .85, .18, "sine", 65);
+      note(196, .03, .65, .05);
+      break;
+    case "flameOut":
+      wings(.55, .06);
+      note(70, .03, .5, .08, "sine", 40);
+      break;
     case "swapStart":
       wings(0.7, 0.18);
       bee(145, 0.85, 0.24, 240);

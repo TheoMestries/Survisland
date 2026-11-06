@@ -1,4 +1,5 @@
 export const teams = [
+  { id: "umarbb", name: "UMARBB", color: "Rouge" },
   { id: "bumbar", name: "Bumbar", color: "Jaune" },
   { id: "avispa", name: "Avispa", color: "Bleu" },
   { id: "hornet", name: "Hornet", color: "Vert" },
@@ -26,31 +27,38 @@ export const secondSwapTeams = Object.fromEntries(
   ]),
 );
 
-const assignmentsBySwap = [null, swapTeams, secondSwapTeams].map((composition) =>
+export const mergeTeams = {
+  umarbb: ["aelita", "paulo", "anthorus", "sparya", "flopy19", "faeten", "mel", "jenna", "salamix", "xyneas", "byphantom", "hurakan"],
+};
+const juryIds = new Set([...mergeTeams.umarbb, "kchouky"]);
+
+export function eliminationLabel(name) {
+  return juryIds.has(findPlayer(name)?.id) ? "Jury" : "Éliminé";
+}
+
+export function isJuryMember(person) {
+  return Boolean(person.eliminated) && juryIds.has(findPlayer(person.name)?.id);
+}
+
+const assignmentsBySwap = [null, swapTeams, secondSwapTeams, mergeTeams].map((composition) =>
   composition && Object.fromEntries(
     Object.entries(composition).flatMap(([team, ids]) => ids.map((id) => [id, team])),
   ),
 );
 
-let viewedSwap = 0;
-try {
-  if (localStorage.getItem("survisland-season32-swap1-seen") === "yes") {
-    viewedSwap = localStorage.getItem("survisland-season32-swap2-seen") === "yes" ? 2 : 1;
-  }
-} catch { /* Keep in-page progress when storage is unavailable. */ }
+const viewedSwap = 3;
 
 export function getViewedSwap() {
   return viewedSwap;
 }
 
 export function markSwapViewed(swap) {
-  if (swap <= viewedSwap) return;
-  viewedSwap = Math.min(2, swap);
+  // Replaying historical swaps preserves the current merge stage.
   document.dispatchEvent(new Event("roster-progress-change"));
 }
 
 export function playerTeam(player, swap = viewedSwap) {
-  return assignmentsBySwap[swap]?.[player.id] || player.team;
+  return assignmentsBySwap[swap]?.[player.id] || (swap === 3 && assignmentsBySwap[2]?.[player.id]) || player.team;
 }
 
 // Team assignments come from the season table, not the portrait backgrounds.
@@ -208,9 +216,9 @@ export function findPlayer(name) {
 export function freshRanking() {
   return players
     .filter((player) => player.id !== "flopy19")
-    .map((player) => ({ name: player.name, tier: "U", reason: "" }));
+    .map((player) => ({ name: player.name, tier: "U", reason: "", immune: false }));
 }
-export function playerIdentity(name, teamId, swap = 2) {
+export function playerIdentity(name, teamId, swap = viewedSwap) {
   const player = findPlayer(name);
   const fragment = document.createDocumentFragment();
   if (!player) {
@@ -259,22 +267,41 @@ export function renderRoster(container, episode = null, assignments = null) {
       .map((person) => findPlayer(person.name)?.id)
       .filter(Boolean),
   );
-  for (const team of teams) {
-    const members = players.filter((player) => (assignments ? assignments[player.id] : player.team) === team.id);
-    if (!members.length) continue;
+  const episodeJuryIds = new Set(
+    (episode?.people || []).filter(isJuryMember).map((person) => findPlayer(person.name).id),
+  );
+  const groups = teams.map((team) => ({
+    ...team,
+    members: players.filter((player) => !episodeJuryIds.has(player.id)
+      && (assignments ? assignments[player.id] : player.team) === team.id),
+  })).filter((group) => group.members.length);
+  const juryMembers = players.filter((player) => episodeJuryIds.has(player.id));
+  if (juryMembers.length) {
+    const mergeIndex = groups.findIndex((group) => group.id === "umarbb");
+    // Jury is a separate group, never a team participating in historical swaps.
+    groups.splice(mergeIndex < 0 ? groups.length : mergeIndex + 1, 0, {
+      id: "jury", name: "Jury", members: juryMembers,
+    });
+  }
+  for (const team of groups) {
+    const isJury = team.id === "jury";
     const section = document.createElement("section");
-    section.className = "roster-team team-" + team.id;
+    section.className = isJury ? "roster-team roster-jury" : "roster-team team-" + team.id;
     const heading = document.createElement("h3");
-    heading.textContent = team.name + " · " + team.color;
+    heading.textContent = isJury ? "Jury" : team.name + " · " + team.color;
     const grid = document.createElement("div");
     grid.className = "roster-grid";
-    for (const player of members) {
+    for (const player of team.members) {
       const card = document.createElement("article");
       card.className = "roster-player";
+      card.dataset.player = player.id;
       const name = document.createElement("h4");
       name.textContent = player.name;
-      card.append(playerIdentity(player.name, team.id), name);
-      if (eliminatedIds.has(player.id)) {
+      const identityTeam = isJury ? assignments?.[player.id] || player.team : team.id;
+      card.append(playerIdentity(player.name, identityTeam), name);
+      if (isJury) {
+        card.classList.add("roster-player--jury");
+      } else if (eliminatedIds.has(player.id)) {
         card.classList.add("roster-player--eliminated");
         const badge = document.createElement("span");
         badge.className = "eliminated-badge";

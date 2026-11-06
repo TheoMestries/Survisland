@@ -31,6 +31,9 @@ function curve(from, bend, to, steps = 24) {
 
 // One self-contained scene. cancel() releases every animation, timer and sound.
 export function createSwapSequence(stage, { players, teams, swapTeams }) {
+  // Later teams must not add columns to the historical starting lineup.
+  const startingTeamIds = new Set(players.map((player) => player.team));
+  const startingTeams = teams.filter((team) => startingTeamIds.has(team.id));
   const compact = stage.classList.contains("sw-compact");
   const width = stage.clientWidth,
     height = stage.clientHeight;
@@ -101,10 +104,10 @@ export function createSwapSequence(stage, { players, teams, swapTeams }) {
   progress.append(el("span", ""));
   stage.append(canvas, title, oldLabels, core, destinations, finale, progress);
   const particles = createSwapParticles(canvas, { width, height, center });
-  teams.forEach((team, column) => {
+  startingTeams.forEach((team, column) => {
     const label = el("div", `sw-old-label team-${team.id}`, team.name);
-    label.style.left = `${(column * width) / 4}px`;
-    label.style.width = `${width / 4}px`;
+    label.style.left = `${(column * width) / startingTeams.length}px`;
+    label.style.width = `${width / startingTeams.length}px`;
     label.style.top = compact ? "88px" : "105px";
     oldLabels.append(label);
     players
@@ -120,7 +123,7 @@ export function createSwapSequence(stage, { players, teams, swapTeams }) {
         const name = el("span", "sw-portrait-name", player.name);
         card.append(photo, name);
         const origin = {
-          x: ((column + 0.5) * width) / 4 - size / 2,
+          x: ((column + 0.5) * width) / startingTeams.length - size / 2,
           y: (compact ? 118 : 144) + row * (compact ? 58 : 83),
         };
         card.style.transform = pose(origin);

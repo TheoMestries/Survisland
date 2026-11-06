@@ -1,5 +1,5 @@
 import { tiers, el, renderEpisode, rankedPeople } from "./episode-view.js";
-import { players, findPlayer, freshRanking, playerIdentity } from "./roster.js";
+import { players, findPlayer, freshRanking, playerIdentity, eliminationLabel } from "./roster.js";
 import { imageUrl } from "./episode-gallery.js";
 import { playSound } from "./site-audio.js";
 const $ = (selector) => document.querySelector(selector);
@@ -113,7 +113,7 @@ function newEpisode(people) {
       summary: "",
       questions: [],
       images: [],
-      people: structuredClone(people),
+      people: structuredClone(people).map((person) => ({ ...person, immune: false })),
     },
   };
   display();
@@ -367,6 +367,7 @@ function renderPeople() {
           "aria-label",
           `${value || "Ce joueur"} : éliminé à cet épisode (ou auparavant)`,
         );
+        immunity.setAttribute("aria-label", `${value || "Ce joueur"} : immunité gagnée à cet épisode`);
       },
       {
         required: true,
@@ -392,6 +393,17 @@ function renderPeople() {
       document.createTextNode("Éliminé à cet épisode (ou auparavant)"),
     );
     card.append(eliminationLabel);
+    const immunityLabel = el("label", "immunity-toggle");
+    const immunity = el("input");
+    immunity.type = "checkbox";
+    immunity.setAttribute("aria-label", `${person.name || "Ce joueur"} : immunité gagnée à cet épisode`);
+    immunity.checked = !!person.immune;
+    immunity.addEventListener("change", () => {
+      person.immune = immunity.checked;
+      markDirty();
+    });
+    immunityLabel.append(immunity, document.createTextNode("Immunité gagnée à cet épisode"));
+    card.append(immunityLabel);
     const label = el("label", "", "Niveau de confiance");
     const select = el("select");
     tiers.forEach((tier) => {
@@ -562,7 +574,12 @@ $("#copy-previous-ranking").addEventListener("click", () => {
     )
   )
     return;
-  current.draft.people = structuredClone(previous.draft.people);
+  // Immunity belongs to this episode, even when its ranking is copied.
+  const playerKey = (person) => findPlayer(person.name)?.id || person.name.trim().toLocaleLowerCase("fr");
+  const immunities = new Map(current.draft.people.map((person) => [playerKey(person), !!person.immune]));
+  current.draft.people = structuredClone(previous.draft.people).map((person) => ({
+    ...person, immune: immunities.get(playerKey(person)) || false,
+  }));
   markDirty();
   renderPeople();
   notice(
@@ -628,7 +645,7 @@ $("#add-roster").addEventListener("click", () => {
   );
 });
 $("#add-person").addEventListener("click", () => {
-  current.draft.people.push({ name: "", tier: "U", reason: "" });
+  current.draft.people.push({ name: "", tier: "U", reason: "", immune: false });
   markDirty();
   renderPeople();
   const cards = [...$("#people-editor").children];

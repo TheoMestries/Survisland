@@ -57,7 +57,9 @@ function validateEpisode(array $input, array $media): array {
         $names[] = mb_strtolower($name);
         $eliminated = $item['eliminated'] ?? false;
         if (!is_bool($eliminated)) fail('Statut d’élimination invalide.');
-        $result['people'][] = ['name' => $name, 'tier' => $tier, 'reason' => textField($item, 'reason', 5000), 'eliminated' => $eliminated];
+        $immune = $item['immune'] ?? false;
+        if (!is_bool($immune)) fail('Statut d’immunité invalide.');
+        $result['people'][] = ['name' => $name, 'tier' => $tier, 'reason' => textField($item, 'reason', 5000), 'eliminated' => $eliminated, 'immune' => $immune];
     }
     $result['images'] = validateImages($input['images'] ?? [], $media);
     return $result;
