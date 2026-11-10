@@ -1,8 +1,8 @@
-import { players, teams, renderRoster, swapTeams, secondSwapTeams, secondSwapMoves, mergeTeams, markSwapViewed, getViewedSwap } from "./roster.js?v=2aa61dd7924a2e40";
-import { playSound, createSoundToggle } from "./site-audio.js?v=2aa61dd7924a2e40";
-import { createSwapSequence } from "./swap-sequence.js?v=2aa61dd7924a2e40";
-import { createSecondSwapSequence } from "./swap-second-sequence.js?v=2aa61dd7924a2e40";
-import { createMergeSequence } from "./merge-sequence.js?v=2aa61dd7924a2e40";
+import { players, teams, renderRoster, swapTeams, secondSwapTeams, secondSwapMoves, mergeTeams, markSwapViewed, getViewedSwap } from "./roster.js?v=69426dcba7f0d919";
+import { playSound, createSoundToggle } from "./site-audio.js?v=69426dcba7f0d919";
+import { createSwapSequence } from "./swap-sequence.js?v=69426dcba7f0d919";
+import { createSecondSwapSequence } from "./swap-second-sequence.js?v=69426dcba7f0d919";
+import { createMergeSequence } from "./merge-sequence.js?v=69426dcba7f0d919";
 
 // Composition du swap : les éliminations ultérieures ne changent pas ce tirage.
 export { swapTeams };
@@ -140,7 +140,7 @@ export function createRosterSwap(container) {
   function showView(value) {
     cleanup();
     currentView = value === 3 && mergeSeen ? 3 : !seen ? 0 : value >= 2 && secondSeen ? 2 : value ? 1 : 0;
-    renderRoster(container, episode, currentView === 3 ? mergeAssignments : currentView === 2 ? secondAssignments : currentView === 1 ? assignments : null);
+    renderRoster(container, episode, currentView === 3 ? mergeAssignments : currentView === 2 ? secondAssignments : currentView === 1 ? assignments : null, currentView);
     summary.textContent = currentView === 3 ? "La réunification · UMARBB · 12 joueurs"
       : currentView
       ? `Les 18 joueurs · Les équipes après le swap ${currentView}`

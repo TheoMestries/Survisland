@@ -1,7 +1,7 @@
-import { tiers, el, renderEpisode, rankedPeople } from "./episode-view.js?v=2aa61dd7924a2e40";
-import { players, findPlayer, freshRanking, playerIdentity, playerDisplayName, eliminationLabel } from "./roster.js?v=2aa61dd7924a2e40";
-import { imageUrl } from "./episode-gallery.js?v=2aa61dd7924a2e40";
-import { playSound } from "./site-audio.js?v=2aa61dd7924a2e40";
+import { tiers, el, renderEpisode, rankedPeople } from "./episode-view.js?v=69426dcba7f0d919";
+import { players, findPlayer, freshRanking, playerIdentity, playerDisplayName, eliminationLabel } from "./roster.js?v=69426dcba7f0d919";
+import { imageUrl } from "./episode-gallery.js?v=69426dcba7f0d919";
+import { playSound } from "./site-audio.js?v=69426dcba7f0d919";
 const $ = (selector) => document.querySelector(selector);
 let csrf = "",
   records = [],

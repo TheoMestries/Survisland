@@ -77,140 +77,140 @@ export const players = [
     name: "Kchouky",
     team: "avispa",
     aliases: [],
-    image: "assets/images/players/kchouky.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/kchouky.png?v=69426dcba7f0d919",
   },
   {
     id: "xyneas",
     name: "XyneAs",
     team: "conong",
     aliases: [],
-    image: "assets/images/players/xyneas.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/xyneas.png?v=69426dcba7f0d919",
   },
   {
     id: "sparya",
     name: "Sparya",
     team: "avispa",
     aliases: [],
-    image: "assets/images/players/sparya.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/sparya.png?v=69426dcba7f0d919",
   },
   {
     id: "twizzyx",
     name: "TwiZzyx",
     team: "bumbar",
     aliases: [],
-    image: "assets/images/players/twizzyx.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/twizzyx.png?v=69426dcba7f0d919",
   },
   {
     id: "anthorus",
     name: "Anthorus",
     team: "bumbar",
     aliases: [],
-    image: "assets/images/players/anthorus.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/anthorus.png?v=69426dcba7f0d919",
   },
   {
     id: "sheep",
     name: "Sheep",
     team: "bumbar",
     aliases: [],
-    image: "assets/images/players/sheep.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/sheep.png?v=69426dcba7f0d919",
   },
   {
     id: "aelita",
     name: "Aelita",
     team: "avispa",
     aliases: ["Aelita A"],
-    image: "assets/images/players/aelita.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/aelita.png?v=69426dcba7f0d919",
   },
   {
     id: "chifuyu",
     name: "Chifuyu",
     team: "conong",
     aliases: [],
-    image: "assets/images/players/chifuyu.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/chifuyu.png?v=69426dcba7f0d919",
   },
   {
     id: "byphantom",
     name: "ByPhantom",
     team: "hornet",
     aliases: [],
-    image: "assets/images/players/byphantom.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/byphantom.png?v=69426dcba7f0d919",
   },
   {
     id: "mel",
     name: "Melley",
     team: "conong",
     aliases: ["Mel", "Meley"],
-    image: "assets/images/players/mel.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/mel.png?v=69426dcba7f0d919",
   },
   {
     id: "romain",
     name: "RomainLeroux",
     team: "conong",
     aliases: ["Romain"],
-    image: "assets/images/players/romain.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/romain.png?v=69426dcba7f0d919",
   },
   {
     id: "flopy19",
     name: "Flopy19",
     team: "bumbar",
     aliases: ["Flopy"],
-    image: "assets/images/players/flopy19.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/flopy19.png?v=69426dcba7f0d919",
   },
   {
     id: "paulo",
     name: "Paulo",
     team: "avispa",
     aliases: [],
-    image: "assets/images/players/paulo.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/paulo.png?v=69426dcba7f0d919",
   },
   {
     id: "templik",
     name: "Templik",
     team: "hornet",
     aliases: [],
-    image: "assets/images/players/templik.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/templik.png?v=69426dcba7f0d919",
   },
   {
     id: "salamix",
     name: "Salamix",
     team: "bumbar",
     aliases: [],
-    image: "assets/images/players/salamix.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/salamix.png?v=69426dcba7f0d919",
   },
   {
     id: "fusoya",
     name: "Fusoya",
     team: "hornet",
     aliases: [],
-    image: "assets/images/players/fusoya.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/fusoya.png?v=69426dcba7f0d919",
   },
   {
     id: "dvil",
     name: "DVil",
     team: "hornet",
     aliases: [],
-    image: "assets/images/players/dvil.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/dvil.png?v=69426dcba7f0d919",
   },
   {
     id: "hurakan",
     name: "Hurakan",
     team: "avispa",
     aliases: [],
-    image: "assets/images/players/hurakan.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/hurakan.png?v=69426dcba7f0d919",
   },
   {
     id: "faeten",
     name: "Faeten",
     team: "hornet",
     aliases: [],
-    image: "assets/images/players/faeten.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/faeten.png?v=69426dcba7f0d919",
   },
   {
     id: "jenna",
     name: "Jenna",
     team: "conong",
     aliases: [],
-    image: "assets/images/players/jenna.png?v=2aa61dd7924a2e40",
+    image: "assets/images/players/jenna.png?v=69426dcba7f0d919",
   },
 ];
 
@@ -248,29 +248,35 @@ export function playerIdentity(name, teamId, swap = viewedSwap) {
   image.height = 800;
   image.loading = "lazy";
   const currentTeam = teamId || playerTeam(player, swap);
-  const previousTeam = teamId
-    ? player.team
-    : (swap === 2 && secondSwapMoves.find((move) => move.id === player.id)?.from) || player.team;
+  const teamHistory = [player.team];
+  for (let stage = 1; stage <= swap; stage++) {
+    const nextTeam = playerTeam(player, stage);
+    if (nextTeam !== teamHistory.at(-1)) teamHistory.push(nextTeam);
+  }
+  if (teamId && teamHistory.at(-1) !== teamId) teamHistory.push(teamId);
   const badge = document.createElement("span");
   badge.className = "team-badge team-" + currentTeam;
   badge.textContent = teams.find((team) => team.id === currentTeam).name;
   fragment.append(image);
-  if (currentTeam !== previousTeam) {
+  if (teamHistory.length > 1) {
     const history = document.createElement("span");
     history.className = "team-history";
-    const previous = document.createElement("del");
-    previous.className = "team-badge team-badge--previous team-" + previousTeam;
-    previous.textContent = teams.find((team) => team.id === previousTeam).name;
-    previous.title = "Ancienne équipe";
-    badge.title = "Nouvelle équipe";
-    history.append(previous, badge);
+    for (const previousTeam of teamHistory.slice(0, -1)) {
+      const previous = document.createElement("del");
+      previous.className = "team-badge team-badge--previous team-" + previousTeam;
+      previous.textContent = teams.find((team) => team.id === previousTeam).name;
+      previous.title = "Ancienne équipe";
+      badge.title = "Nouvelle équipe";
+      history.append(previous);
+    }
+    history.append(badge);
     fragment.append(history);
   } else {
     fragment.append(badge);
   }
   return fragment;
 }
-export function renderRoster(container, episode = null, assignments = null) {
+export function renderRoster(container, episode = null, assignments = null, swap = viewedSwap) {
   container.replaceChildren();
   container.classList.toggle("roster-swapped", Boolean(assignments));
   const eliminatedIds = new Set(
@@ -310,7 +316,7 @@ export function renderRoster(container, episode = null, assignments = null) {
       const name = document.createElement("h4");
       name.textContent = player.name;
       const identityTeam = isJury ? assignments?.[player.id] || player.team : team.id;
-      card.append(playerIdentity(player.name, identityTeam), name);
+      card.append(playerIdentity(player.name, identityTeam, swap), name);
       if (isJury) {
         card.classList.add("roster-player--jury");
       } else if (eliminatedIds.has(player.id)) {
